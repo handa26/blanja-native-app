@@ -3,19 +3,12 @@ import {View, StyleSheet, TextInput} from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Profile = ({navigation}) => {
+const Login = ({navigation}) => {
   const [value, onChangeText] = React.useState('');
   return (
     <Container>
       <Content style={styles.formWrapper}>
-        <Text style={styles.head}>Sign Up</Text>
-        <View style={styles.formBox}>
-          <TextInput
-            onChangeText={(val) => onChangeText(val)}
-            style={styles.inputBox}
-          />
-          <Text style={styles.text}>Name</Text>
-        </View>
+        <Text style={styles.head}>Login</Text>
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => onChangeText(val)}
@@ -30,23 +23,18 @@ const Profile = ({navigation}) => {
           <Text style={styles.text}>Password</Text>
         </View>
         <View style={styles.textBox}>
-          <Text style={styles.longText}>Already have an account?</Text>
-          <Icon
-            name="long-arrow-right"
-            color="#DB3022"
-            size={15}
-            onPress={() => navigation.navigate('Login')}
-          />
+          <Text style={styles.longText}>Forgot your password?</Text>
+          <Icon name="long-arrow-right" color="#DB3022" size={15} />
         </View>
         <Button style={styles.button}>
-          <Text style={{marginLeft: 125}}>Sign Up</Text>
+          <Text style={{marginLeft: 125}}>Login</Text>
         </Button>
       </Content>
     </Container>
   );
 };
 
-export default Profile;
+export default Login;
 
 const styles = StyleSheet.create({
   formWrapper: {

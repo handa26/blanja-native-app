@@ -2,7 +2,6 @@ import React from 'react';
 import {View, ScrollView, Image, StyleSheet, StatusBar} from 'react-native';
 import {Badge, Footer, Button, FooterTab, Text} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import Icon from 'react-native-vector-icons/Ionicons';
 
 import streetClothes from '../assets/street-clothes.png';
 import blouse from '../assets/blouse.jpg';
