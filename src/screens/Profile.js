@@ -1,6 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
-import {Header, Button, Right} from 'native-base';
+import {View, StyleSheet, Image} from 'react-native';
+import {
+  Header,
+  Button,
+  Right,
+  List,
+  ListItem,
+  Text,
+  Left,
+  Content,
+} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 
@@ -30,6 +39,50 @@ const Profile = ({navigation}) => {
           </Text>
         </View>
       </View>
+      <View>
+        <List style={{marginRight: 15, marginTop: 20}}>
+          <ListItem>
+            <Left>
+              <View>
+                <Text style={styles.headline}>My orders</Text>
+                <Text style={styles.textDetail}>Already have 12 orders</Text>
+              </View>
+            </Left>
+            <Right>
+              <Icon name="chevron-right" />
+            </Right>
+          </ListItem>
+          <ListItem>
+            <Left>
+              <View>
+                <Text style={styles.headline}>Shipping addresses</Text>
+                <Text style={{fontSize: 16, color: 'gray', marginRight: 155}}>
+                  3 addresses
+                </Text>
+              </View>
+            </Left>
+            <Right>
+              <Icon name="chevron-right" />
+            </Right>
+          </ListItem>
+          <ListItem>
+            <Left>
+              <View>
+                <Text
+                  style={{fontSize: 20, fontWeight: 'bold', marginRight: 115}}>
+                  Settings
+                </Text>
+                <Text style={{fontSize: 16, color: 'gray', marginRight: 20}}>
+                  Notifications, password
+                </Text>
+              </View>
+            </Left>
+            <Right>
+              <Icon name="chevron-right" />
+            </Right>
+          </ListItem>
+        </List>
+      </View>
     </View>
   );
 };
@@ -41,5 +94,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingVertical: 35,
     marginTop: 20,
+  },
+  headline: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginRight: 70,
+  },
+  textDetail: {
+    fontSize: 16,
+    color: 'gray',
   },
 });
