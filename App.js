@@ -9,11 +9,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Home from './src/screens/Home';
 import Profile from './src/screens/Profile';
 import Login from './src/screens/Auth/Login';
+import SignUp from './src/screens/Auth/SignUp';
 import Shop from './src/screens/Shop';
 import Bag from './src/screens/Bag';
 import Favorite from './src/screens/Favorite';
 import Product from './src/screens/Product';
-import DetailProduct from './src/components/DetailProduct/DetailProduct';
+import WarnMessage from './src/components/WarnMessage/WarnMessage';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -92,10 +93,12 @@ const appRouter = () => {
           <Stack.Screen name="Tab" component={MyTabs} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Signup" component={SignUp} />
           <Stack.Screen name="Shop" component={Shop} />
           <Stack.Screen name="Bag" component={Bag} />
           <Stack.Screen name="Favorite" component={Favorite} />
           <Stack.Screen name="Detail" component={Product} />
+          <Stack.Screen name="Notification" component={WarnMessage} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
