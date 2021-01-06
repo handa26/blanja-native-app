@@ -59,7 +59,7 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Favorite"
+        name="Wishlist"
         component={Favorite}
         options={{
           tabBarIcon: ({color}) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Header, Left, Button, Body, Title, Right} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import HeadlineText from '../components/HeadlineText/HeadlineText';
 
 const Favorite = ({navigation}) => {
   return (
@@ -17,11 +18,15 @@ const Favorite = ({navigation}) => {
           </Button>
         </Left>
         <Body style={styles.title}>
-          <Title style={{color: 'black'}}>Favorites</Title>
+          <Title style={{color: 'black'}}>Wishlist</Title>
         </Body>
-        <Right />
+        <Right>
+          <Button transparent>
+            <Icon name="cart-plus" size={25} />
+          </Button>
+        </Right>
       </Header>
-      <Text>Ini screen favorite</Text>
+      <HeadlineText condition="Wishlist" />
     </View>
   );
 };
