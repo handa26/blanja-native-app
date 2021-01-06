@@ -4,7 +4,7 @@ import {View, Text} from 'react-native';
 
 import DetailProduct from '../components/DetailProduct/DetailProduct';
 
-const Product = ({route}) => {
+const Product = ({route, navigation}) => {
   const [product, setProduct] = useState({});
   const [image, setImage] = useState({});
   const {Itemid} = route.params;
@@ -23,13 +23,13 @@ const Product = ({route}) => {
 
   return (
     <View>
-      <Text>Produk detail</Text>
       <DetailProduct
         name={product.product_name}
         desc={product.product_description}
         img={image[0]}
         brand={product.product_brand}
         price={product.product_price}
+        navigation={navigation}
       />
     </View>
   );

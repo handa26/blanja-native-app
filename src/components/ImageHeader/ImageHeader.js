@@ -5,12 +5,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import streetClothes from '../../assets/street-clothes.png';
 
-const ImageHeader = () => {
+const ImageHeader = ({navigation}) => {
   return (
     <View style={styles.imageWrapper}>
       <Image source={streetClothes} style={styles.imageHeader} />
       <Text style={styles.text}>Street Clothes</Text>
-      <Icon style={styles.notif} name="bell-o" size={25} color="white" />
+      <Icon
+        style={styles.notif}
+        name="bell-o"
+        size={25}
+        color="white"
+        onPress={() => navigation.navigate('Notification')}
+      />
     </View>
   );
 };

@@ -31,7 +31,7 @@ const Home = ({navigation}) => {
     <View>
       <ScrollView>
         <StatusBar translucent backgroundColor="transparent" />
-        <ImageHeader />
+        <ImageHeader navigation={navigation} />
         <HeadlineText condition="New" desc="You’ve never seen it before!" />
         <ScrollView horizontal style={{flexDirection: 'row'}}>
           {products.products &&

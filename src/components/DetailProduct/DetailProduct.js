@@ -5,16 +5,20 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import rating from '../../assets/icons/rating-full.png';
 
-const DetailProduct = ({name, desc, img, brand, price}) => {
+const DetailProduct = ({name, desc, img, brand, price, navigation}) => {
   return (
     <View>
       <Header style={styles.header}>
         <Left>
           <Button transparent>
-            <Icon name="arrow-left" size={25} />
+            <Icon
+              name="arrow-left"
+              size={25}
+              onPress={() => navigation.goBack()}
+            />
           </Button>
         </Left>
-        <Body style={styles.title}>
+        <Body>
           <Title style={{color: 'black'}}>{name}</Title>
         </Body>
         <Right>
@@ -60,6 +64,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: 'white',
     paddingVertical: 35,
+    marginTop: 20,
   },
   productWrapper: {
     flexDirection: 'column',
