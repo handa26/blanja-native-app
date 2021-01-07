@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {View, ScrollView, StatusBar} from 'react-native';
+import {View, ScrollView, StatusBar, Text} from 'react-native';
 
 import ImageHeader from '../components/ImageHeader/ImageHeader';
 import ProductCard from '../components/ProductCard/ProductCard';
@@ -25,14 +25,19 @@ const Home = ({navigation}) => {
       .catch((err) => console.log(err));
   }, []);
 
-  // console.log('Outside render..', products);
-
   return (
     <View>
       <ScrollView>
         <StatusBar translucent backgroundColor="transparent" />
         <ImageHeader navigation={navigation} />
-        <HeadlineText condition="New" desc="You’ve never seen it before!" />
+        <View style={{flexDirection: 'row'}}>
+          <HeadlineText condition="New" desc="You’ve never seen it before!" />
+          <Text
+            onPress={() => navigation.navigate('NewProducts')}
+            style={{left: 200, top: 59}}>
+            View all
+          </Text>
+        </View>
         <ScrollView horizontal style={{flexDirection: 'row'}}>
           {products.products &&
             products.products.map((product) => {
@@ -51,10 +56,17 @@ const Home = ({navigation}) => {
               );
             })}
         </ScrollView>
-        <HeadlineText
-          condition="Popular"
-          desc="You may missed it, but it's our popular products"
-        />
+        <View style={{flexDirection: 'row'}}>
+          <HeadlineText
+            condition="Popular"
+            desc="You may missed it, but it's our popular products"
+          />
+          <Text
+            onPress={() => navigation.navigate('PopularProducts')}
+            style={{left: 100, top: 63}}>
+            View all
+          </Text>
+        </View>
         <ScrollView horizontal style={{flexDirection: 'row'}}>
           {productsPopular.products &&
             productsPopular.products.map((product) => {
@@ -67,6 +79,8 @@ const Home = ({navigation}) => {
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}
+                  id={product.id}
+                  navigation={navigation}
                 />
               );
             })}

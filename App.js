@@ -15,6 +15,12 @@ import Bag from './src/screens/Bag';
 import Favorite from './src/screens/Favorite';
 import Product from './src/screens/Product';
 import WarnMessage from './src/components/WarnMessage/WarnMessage';
+import Search from './src/components/Search/Search';
+import MyOrder from './src/components/MyOrder/MyOrder';
+import Shipping from './src/components/Shipping/Shipping';
+import Setup from './src/components/Setup/Setup';
+import NewProducts from './src/components/NewProducts/NewProducts';
+import PopularProducts from './src/components/PopularProducts/PopularProducts';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -99,6 +105,12 @@ const appRouter = () => {
           <Stack.Screen name="Favorite" component={Favorite} />
           <Stack.Screen name="Detail" component={Product} />
           <Stack.Screen name="Notification" component={WarnMessage} />
+          <Stack.Screen name="Search" component={Search} />
+          <Stack.Screen name="Order" component={MyOrder} />
+          <Stack.Screen name="Shipping" component={Shipping} />
+          <Stack.Screen name="Setup" component={Setup} />
+          <Stack.Screen name="NewProducts" component={NewProducts} />
+          <Stack.Screen name="PopularProducts" component={PopularProducts} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {View, Text} from 'react-native';
+import {Spinner} from 'native-base';
 
 import DetailProduct from '../components/DetailProduct/DetailProduct';
 
@@ -23,14 +24,20 @@ const Product = ({route, navigation}) => {
 
   return (
     <View>
-      <DetailProduct
-        name={product.product_name}
-        desc={product.product_description}
-        img={image[0]}
-        brand={product.product_brand}
-        price={product.product_price}
-        navigation={navigation}
-      />
+      {product ? (
+        <DetailProduct
+          name={product.product_name}
+          desc={product.product_description}
+          img={image[0]}
+          firstImg={image[1]}
+          secImg={image[2]}
+          brand={product.product_brand}
+          price={product.product_price}
+          navigation={navigation}
+        />
+      ) : (
+        <Spinner />
+      )}
     </View>
   );
 };

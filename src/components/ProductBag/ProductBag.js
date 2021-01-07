@@ -7,6 +7,7 @@ import styles from './styles';
 import imageSample from '../../assets/blouse.jpg';
 
 const ProductBag = () => {
+  const [counter, setCounter] = React.useState(2);
   return (
     <View style={styles.cardWrapper}>
       <Image style={styles.image} source={imageSample} />
@@ -21,11 +22,17 @@ const ProductBag = () => {
         </View>
         <View style={styles.counterWrapper}>
           <View style={{flexDirection: 'row'}}>
-            <Button style={styles.button} rounded>
+            <Button
+              style={styles.button}
+              rounded
+              onPress={() => setCounter(counter - 1)}>
               <Icon name="minus" />
             </Button>
-            <Text style={styles.counterNum}>1</Text>
-            <Button style={styles.button} rounded>
+            <Text style={styles.counterNum}>{counter}</Text>
+            <Button
+              style={styles.button}
+              rounded
+              onPress={() => setCounter(counter + 1)}>
               <Icon name="plus" />
             </Button>
           </View>

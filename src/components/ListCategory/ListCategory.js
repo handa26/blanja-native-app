@@ -4,11 +4,13 @@ import {List, ListItem, Text, Button} from 'native-base';
 
 import styles from './styles';
 
-const ListCategory = () => {
+const ListCategory = ({navigation}) => {
   return (
     <View>
       <View>
-        <Button style={styles.button}>
+        <Button
+          style={styles.button}
+          onPress={() => navigation.navigate('NewProducts')}>
           <Text style={{marginLeft: 130}}>View All Items</Text>
         </Button>
         <List>

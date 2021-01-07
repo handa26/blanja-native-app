@@ -1,15 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
-import {
-  Header,
-  Button,
-  Right,
-  List,
-  ListItem,
-  Text,
-  Left,
-  Content,
-} from 'native-base';
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {Header, Button, Right, List, ListItem, Text, Left} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 
@@ -20,7 +11,7 @@ const Profile = ({navigation}) => {
     <View>
       <Header style={styles.header}>
         <Right>
-          <Button transparent>
+          <Button transparent onPress={() => navigation.navigate('Search')}>
             <Icon name="search" size={25} />
           </Button>
         </Right>
@@ -28,10 +19,12 @@ const Profile = ({navigation}) => {
       <HeadlineText condition="My profile" />
       <View
         style={{marginLeft: 15, flexDirection: 'row', alignItems: 'center'}}>
-        <Image
-          source={john}
-          style={{width: 100, height: 100, borderRadius: 50}}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+          <Image
+            source={john}
+            style={{width: 100, height: 100, borderRadius: 50}}
+          />
+        </TouchableOpacity>
         <View style={{flexDirection: 'column', marginLeft: 10}}>
           <Text style={{fontSize: 18, fontWeight: 'bold'}}>John Lennon</Text>
           <Text style={{fontSize: 14, color: 'gray'}}>
@@ -41,23 +34,23 @@ const Profile = ({navigation}) => {
       </View>
       <View>
         <List style={{marginRight: 15, marginTop: 20}}>
-          <ListItem>
+          <ListItem onPress={() => navigation.navigate('Order')}>
             <Left>
               <View>
                 <Text style={styles.headline}>My orders</Text>
-                <Text style={styles.textDetail}>Already have 12 orders</Text>
+                <Text style={styles.textDetail}>Already have 5 orders</Text>
               </View>
             </Left>
             <Right>
               <Icon name="chevron-right" />
             </Right>
           </ListItem>
-          <ListItem>
+          <ListItem onPress={() => navigation.navigate('Shipping')}>
             <Left>
               <View>
                 <Text style={styles.headline}>Shipping addresses</Text>
                 <Text style={{fontSize: 16, color: 'gray', marginRight: 155}}>
-                  3 addresses
+                  2 addresses
                 </Text>
               </View>
             </Left>
@@ -65,7 +58,7 @@ const Profile = ({navigation}) => {
               <Icon name="chevron-right" />
             </Right>
           </ListItem>
-          <ListItem>
+          <ListItem onPress={() => navigation.navigate('Setup')}>
             <Left>
               <View>
                 <Text

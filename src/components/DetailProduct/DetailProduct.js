@@ -1,13 +1,35 @@
-import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
-import {Header, Left, Button, Body, Title, Right} from 'native-base';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import {ScrollView, View, Text, Image, StyleSheet} from 'react-native';
+import {
+  Header,
+  Left,
+  Button,
+  Body,
+  Title,
+  Right,
+  List,
+  ListItem,
+  H2,
+} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import rating from '../../assets/icons/rating-full.png';
+import ProductCard from '../ProductCard/ProductCard';
 
 const DetailProduct = ({name, desc, img, brand, price, navigation}) => {
+  const [products, setProducts] = useState({});
+  const url = 'http://192.168.8.100:3000/products';
+
+  useEffect(() => {
+    axios
+      .get(url + '?page=1&limit=8')
+      .then(({data}) => setProducts(data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
-    <View>
+    <ScrollView>
       <Header style={styles.header}>
         <Left>
           <Button transparent>
@@ -36,15 +58,63 @@ const DetailProduct = ({name, desc, img, brand, price, navigation}) => {
                 marginVertical: 5,
               }}>
               <Text style={styles.text}>{name}</Text>
-              <Text style={styles.text}>Rp. {price}</Text>
+              <Text style={styles.textPrice}>Rp. {price}</Text>
             </View>
             <Text style={styles.textBrand}>{brand}</Text>
             <Image source={rating} />
           </View>
           <Text style={styles.textDesc}>{desc}</Text>
+          <Button style={styles.button}>
+            <Text style={{marginLeft: 150, color: 'white'}}>ADD TO CART</Text>
+          </Button>
         </View>
+        <List style={{marginRight: 15, marginTop: 20}}>
+          <ListItem>
+            <Left>
+              <View>
+                <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+                  Shipping info
+                </Text>
+              </View>
+            </Left>
+            <Right>
+              <Icon name="chevron-right" />
+            </Right>
+          </ListItem>
+          <ListItem>
+            <Left>
+              <View>
+                <Text style={{fontSize: 20, fontWeight: 'bold'}}>Support</Text>
+              </View>
+            </Left>
+            <Right>
+              <Icon name="chevron-right" />
+            </Right>
+          </ListItem>
+        </List>
+        <H2 style={styles.headlineText}>You may also like this</H2>
+        <ScrollView
+          horizontal
+          style={{flexDirection: 'row', marginVertical: 15}}>
+          {products.products &&
+            products.products.map((product) => {
+              let img = product.image.split(',');
+              console.log(img[0]);
+              return (
+                <ProductCard
+                  navigation={navigation}
+                  key={product.id}
+                  imgUrl={img[0].replace('localhost', '192.168.8.100')}
+                  name={product.product_name}
+                  brand={product.product_brand}
+                  price={product.product_price}
+                  id={product.id}
+                />
+              );
+            })}
+        </ScrollView>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -73,6 +143,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     fontWeight: 'bold',
+    width: 250,
+  },
+  textPrice: {
+    fontSize: 24,
+    fontWeight: 'bold',
   },
   textBrand: {
     color: 'gray',
@@ -81,5 +156,16 @@ const styles = StyleSheet.create({
   textDesc: {
     fontSize: 14,
     marginTop: 15,
+  },
+  headlineText: {
+    marginLeft: 15,
+    marginTop: 15,
+  },
+  button: {
+    width: 400,
+    height: 48,
+    marginVertical: 15,
+    backgroundColor: '#DB3022',
+    borderRadius: 50,
   },
 });

@@ -21,10 +21,14 @@ const Shop = ({navigation}) => {
           <Title style={{color: 'black'}}>Categories</Title>
         </Body>
         <Right>
-          <Icon name="search" size={25} />
+          <Icon
+            name="search"
+            size={25}
+            onPress={() => navigation.navigate('Search')}
+          />
         </Right>
       </Header>
-      <ListCategory />
+      <ListCategory navigation={navigation} />
     </View>
   );
 };
