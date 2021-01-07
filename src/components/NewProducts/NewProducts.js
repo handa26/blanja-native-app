@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {View, ScrollView, StyleSheet} from 'react-native';
-import {Header, Left, Button, Body, Title, Right, Spinner} from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Spinner} from 'native-base';
 import ProductCard from '../ProductCard/ProductCard';
+import CustomHeader from '../CustomHeader/CustomHeader';
 
 const NewProducts = ({navigation}) => {
   const [products, setProducts] = useState({});
-  const url = 'http://192.168.8.100:3000/products';
+  const url = 'http://192.168.8.101:3000/products';
 
   useEffect(() => {
     axios
@@ -20,7 +20,14 @@ const NewProducts = ({navigation}) => {
 
   return (
     <ScrollView>
-      <Header style={styles.header}>
+      <CustomHeader
+        leftIcon="arrow-left"
+        leftIconRoute={() => navigation.goBack()}
+        name="New Products"
+        rightIcon="search"
+        rightIconRoute={() => navigation.navigate('Search')}
+      />
+      {/* <Header style={styles.header}>
         <Left>
           <Button transparent>
             <Icon
@@ -40,7 +47,7 @@ const NewProducts = ({navigation}) => {
             onPress={() => navigation.navigate('Search')}
           />
         </Right>
-      </Header>
+      </Header> */}
       <View
         style={{
           flexDirection: 'row',

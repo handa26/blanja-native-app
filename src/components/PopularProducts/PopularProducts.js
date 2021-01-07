@@ -4,10 +4,11 @@ import {View, ScrollView, StyleSheet} from 'react-native';
 import {Header, Left, Button, Body, Title, Right, Spinner} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProductCard from '../ProductCard/ProductCard';
+import CustomHeader from '../CustomHeader/CustomHeader';
 
 const PopularProducts = ({navigation}) => {
   const [productsPopular, setProductsPopular] = useState({});
-  const url = 'http://192.168.8.100:3000/products';
+  const url = 'http://192.168.8.101:3000/products';
 
   useEffect(() => {
     axios
@@ -18,27 +19,13 @@ const PopularProducts = ({navigation}) => {
 
   return (
     <ScrollView>
-      <Header style={styles.header}>
-        <Left>
-          <Button transparent>
-            <Icon
-              name="arrow-left"
-              size={25}
-              onPress={() => navigation.goBack()}
-            />
-          </Button>
-        </Left>
-        <Body style={styles.title}>
-          <Title style={{color: 'black'}}>Most popular</Title>
-        </Body>
-        <Right>
-          <Icon
-            name="search"
-            size={25}
-            onPress={() => navigation.navigate('Search')}
-          />
-        </Right>
-      </Header>
+      <CustomHeader
+        leftIcon="arrow-left"
+        leftIconRoute={() => navigation.goBack()}
+        name="Most Popular"
+        rightIcon="search"
+        rightIconRoute={() => navigation.navigate('Search')}
+      />
       <View
         style={{
           flexDirection: 'row',
