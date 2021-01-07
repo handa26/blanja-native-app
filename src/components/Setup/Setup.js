@@ -14,30 +14,19 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeadlineText from '../HeadlineText/HeadlineText';
+import CustomHeader from '../CustomHeader/CustomHeader';
 
 const Setup = ({navigation}) => {
   const [value, setValue] = React.useState('John Lennon');
   const [date, setDate] = React.useState('12/12/1989');
   return (
     <View>
-      <Header style={styles.header}>
-        <Left>
-          <Button transparent>
-            <Icon
-              name="arrow-left"
-              size={25}
-              onPress={() => navigation.goBack()}
-            />
-          </Button>
-        </Left>
-        <Right>
-          <Icon
-            name="search"
-            size={25}
-            onPress={() => navigation.navigate('Search')}
-          />
-        </Right>
-      </Header>
+      <CustomHeader
+        leftIcon="arrow-left"
+        leftIconRoute={() => navigation.goBack()}
+        rightIcon="search"
+        rightIconRoute={() => navigation.navigate('Search')}
+      />
       <HeadlineText condition="Settings" />
       <View>
         <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20}}>

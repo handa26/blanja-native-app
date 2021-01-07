@@ -1,25 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {ScrollView, View, Text, Image, StyleSheet} from 'react-native';
-import {
-  Header,
-  Left,
-  Button,
-  Body,
-  Title,
-  Right,
-  List,
-  ListItem,
-  H2,
-} from 'native-base';
+import {Left, Button, Right, List, ListItem, H2} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import rating from '../../assets/icons/rating-full.png';
 import ProductCard from '../ProductCard/ProductCard';
+import CustomHeader from '../CustomHeader/CustomHeader';
 
 const DetailProduct = ({name, desc, img, brand, price, navigation}) => {
   const [products, setProducts] = useState({});
-  const url = 'http://192.168.8.100:3000/products';
+  const url = 'http://192.168.8.101:3000/products';
 
   useEffect(() => {
     axios
@@ -30,23 +21,12 @@ const DetailProduct = ({name, desc, img, brand, price, navigation}) => {
 
   return (
     <ScrollView>
-      <Header style={styles.header}>
-        <Left>
-          <Button transparent>
-            <Icon
-              name="arrow-left"
-              size={25}
-              onPress={() => navigation.goBack()}
-            />
-          </Button>
-        </Left>
-        <Body>
-          <Title style={{color: 'black'}}>{name}</Title>
-        </Body>
-        <Right>
-          <Icon name="share-alt" size={25} />
-        </Right>
-      </Header>
+      <CustomHeader
+        leftIconRoute={() => navigation.goBack()}
+        name={name}
+        leftIcon="arrow-left"
+        rightIcon="share-alt"
+      />
       <View>
         <Image source={{uri: img}} style={styles.productImage} />
         <View style={styles.productWrapper}>
@@ -130,11 +110,6 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: 65,
-  },
-  header: {
-    backgroundColor: 'white',
-    paddingVertical: 35,
-    marginTop: 20,
   },
   productWrapper: {
     flexDirection: 'column',

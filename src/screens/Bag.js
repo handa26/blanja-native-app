@@ -1,20 +1,18 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Header, Button, Right} from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {View} from 'react-native';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 import ProductBag from '../components/ProductBag/ProductBag';
+import CustomHeader from '../components/CustomHeader/CustomHeader';
 
-const Bag = () => {
+const Bag = ({navigation}) => {
   return (
     <View>
-      <Header style={styles.header}>
-        <Right>
-          <Button transparent>
-            <Icon name="search" size={25} />
-          </Button>
-        </Right>
-      </Header>
+      <CustomHeader
+        rightIcon="search"
+        rightIconRoute={() => navigation.navigate('Search')}
+        leftIconRoute={() => navigation.goBack()}
+        leftIcon="arrow-left"
+      />
       <HeadlineText condition="My Bag" />
       <ProductBag />
       <ProductBag />
@@ -23,11 +21,3 @@ const Bag = () => {
 };
 
 export default Bag;
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: 'white',
-    paddingVertical: 35,
-    marginTop: 20,
-  },
-});

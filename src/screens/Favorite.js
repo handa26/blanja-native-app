@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {ScrollView, View, Text, StyleSheet, Image} from 'react-native';
-import {Header, Left, Button, Body, Title, Right, Spinner} from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Spinner} from 'native-base';
 import ProductCard from '../components/ProductCard/ProductCard';
+import CustomHeader from '../components/CustomHeader/CustomHeader';
 import bags from '../assets/icons/bags.png';
 
 const Favorite = ({navigation}) => {
   const [productsPopular, setProductsPopular] = useState({});
-  const url = 'http://192.168.8.100:3000/products';
+  const url = 'http://192.168.8.101:3000/products';
 
   useEffect(() => {
     axios
@@ -19,26 +19,12 @@ const Favorite = ({navigation}) => {
 
   return (
     <ScrollView>
-      <Header style={styles.header}>
-        <Left>
-          <Button transparent>
-            <Icon
-              name="arrow-left"
-              size={25}
-              onPress={() => navigation.goBack()}
-            />
-          </Button>
-        </Left>
-        <Body style={styles.title}>
-          <Title style={{color: 'black'}}>Wishlist</Title>
-        </Body>
-        <Right>
-          <Button transparent>
-            <Icon name="cart-plus" size={25} />
-          </Button>
-        </Right>
-      </Header>
-      {/* <HeadlineText condition="Wishlist" /> */}
+      <CustomHeader
+        name="Wishlist"
+        leftIcon="arrow-left"
+        leftIconRoute={() => navigation.goBack()}
+        rightIcon="cart-plus"
+      />
       <View style={{height: 450}}>
         <View>
           <Image source={bags} style={styles.image} />
@@ -55,13 +41,7 @@ const Favorite = ({navigation}) => {
       <Text style={{marginVertical: 15, fontSize: 24, marginLeft: 15}}>
         Recommendation for you
       </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around',
-          marginVertical: 15,
-        }}>
+      <View style={styles.productsWrapper}>
         {productsPopular.products ? (
           productsPopular.products &&
           productsPopular.products.map((product) => {
@@ -98,5 +78,11 @@ const styles = StyleSheet.create({
   image: {
     left: 100,
     top: 100,
+  },
+  productsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    marginVertical: 15,
   },
 });

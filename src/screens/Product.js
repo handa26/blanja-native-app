@@ -9,7 +9,7 @@ const Product = ({route, navigation}) => {
   const [product, setProduct] = useState({});
   const [image, setImage] = useState({});
   const {Itemid} = route.params;
-  const url = 'http://192.168.8.100:3000/product/' + Itemid;
+  const url = 'http://192.168.8.101:3000/product/' + Itemid;
 
   useEffect(() => {
     axios

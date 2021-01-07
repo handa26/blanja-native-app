@@ -3,19 +3,17 @@ import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Header, Button, Right, List, ListItem, Text, Left} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
+import CustomHeader from '../components/CustomHeader/CustomHeader';
 
 import john from '../assets/john-lennon.jpg';
 
 const Profile = ({navigation}) => {
   return (
     <View>
-      <Header style={styles.header}>
-        <Right>
-          <Button transparent onPress={() => navigation.navigate('Search')}>
-            <Icon name="search" size={25} />
-          </Button>
-        </Right>
-      </Header>
+      <CustomHeader
+        rightIcon="search"
+        rightIconRoute={() => navigation.navigate('Search')}
+      />
       <HeadlineText condition="My profile" />
       <View
         style={{marginLeft: 15, flexDirection: 'row', alignItems: 'center'}}>
