@@ -97,12 +97,8 @@ const appRouter = () => {
       <NavigationContainer>
         <Stack.Navigator headerMode="none">
           <Stack.Screen name="Tab" component={MyTabs} />
-          <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Signup" component={SignUp} />
-          <Stack.Screen name="Shop" component={Shop} />
-          <Stack.Screen name="Bag" component={Bag} />
-          <Stack.Screen name="Favorite" component={Favorite} />
           <Stack.Screen name="Detail" component={Product} />
           <Stack.Screen name="Notification" component={WarnMessage} />
           <Stack.Screen name="Search" component={Search} />
