@@ -1,18 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {
-  Header,
-  Left,
-  Button,
-  Body,
-  Title,
-  Right,
-  Form,
-  Item,
-  Input,
-  Label,
-} from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Form, Item, Input, Label} from 'native-base';
 import HeadlineText from '../HeadlineText/HeadlineText';
 import CustomHeader from '../CustomHeader/CustomHeader';
 
@@ -80,11 +68,6 @@ const Setup = ({navigation}) => {
 export default Setup;
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: 'white',
-    paddingVertical: 35,
-    marginTop: 20,
-  },
   label: {
     marginLeft: 5,
   },

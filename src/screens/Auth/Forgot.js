@@ -1,13 +1,12 @@
 import React from 'react';
 import {View, TextInput} from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomHeader from '../../components/CustomHeader/CustomHeader';
 import HeadlineText from '../../components/HeadlineText/HeadlineText';
 
 import styles from './styles';
 
-const Login = ({navigation}) => {
+const Forgot = ({navigation}) => {
   const [value, onChangeText] = React.useState('');
   return (
     <Container>
@@ -15,8 +14,12 @@ const Login = ({navigation}) => {
         leftIcon="arrow-left"
         leftIconRoute={() => navigation.goBack()}
       />
-      <HeadlineText condition="Login" />
+      <HeadlineText condition="Forgot password" />
       <Content style={styles.formWrapper}>
+        <Text style={{marginLeft: 20, fontSize: 14}}>
+          Please, enter your email address. You will receive a link to create a
+          new password via email.
+        </Text>
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => onChangeText(val)}
@@ -26,27 +29,14 @@ const Login = ({navigation}) => {
             Email
           </Text>
         </View>
-        <View onChangeText={(val) => onChangeText(val)} style={styles.formBox}>
-          <TextInput secureTextEntry style={styles.inputBox} />
-          <Text style={styles.text}>Password</Text>
-        </View>
-        <View style={styles.textBox}>
-          <Text style={styles.longText}>Forgot your password?</Text>
-          <Icon
-            name="long-arrow-right"
-            color="#DB3022"
-            size={15}
-            onPress={() => navigation.navigate('Forgot')}
-          />
-        </View>
         <Button
           style={styles.button}
-          onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.buttonText}>Login</Text>
+          onPress={() => navigation.navigate('Reset')}>
+          <Text style={styles.buttonText}>Send</Text>
         </Button>
       </Content>
     </Container>
   );
 };
 
-export default Login;
+export default Forgot;

@@ -1,14 +1,22 @@
-import React from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {View, TextInput} from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
+import HeadlineText from '../../components/HeadlineText/HeadlineText';
+import styles from './styles';
 
 const SignUp = ({navigation}) => {
-  const [value, onChangeText] = React.useState('');
+  const [value, onChangeText] = useState('');
   return (
     <Container>
+      <CustomHeader
+        leftIcon="arrow-left"
+        leftIconRoute={() => navigation.goBack()}
+      />
+      <HeadlineText condition="Sign Up" />
       <Content style={styles.formWrapper}>
-        <Text style={styles.head}>Sign Up</Text>
+        {/* <Text style={styles.head}>Sign Up</Text> */}
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => onChangeText(val)}
@@ -39,7 +47,7 @@ const SignUp = ({navigation}) => {
           />
         </View>
         <Button style={styles.button}>
-          <Text style={{marginLeft: 125}}>Sign Up</Text>
+          <Text style={styles.buttonText}>Sign Up</Text>
         </Button>
       </Content>
     </Container>
@@ -47,53 +55,3 @@ const SignUp = ({navigation}) => {
 };
 
 export default SignUp;
-
-const styles = StyleSheet.create({
-  formWrapper: {
-    marginTop: 130,
-  },
-  head: {
-    marginLeft: 35,
-    fontSize: 34,
-    fontWeight: 'bold',
-  },
-  formBox: {
-    position: 'relative',
-    marginVertical: 20,
-    marginHorizontal: 35,
-  },
-  text: {
-    position: 'absolute',
-    fontSize: 11,
-    color: 'gray',
-    top: 8,
-    left: 10,
-  },
-  textBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 343,
-    marginLeft: 35,
-    position: 'relative',
-    marginVertical: 20,
-    justifyContent: 'flex-end',
-  },
-  longText: {fontSize: 14, marginRight: 10},
-  textIcon: {
-    color: '#DADADA',
-  },
-  inputBox: {
-    width: 343,
-    height: 64,
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: '#f1f1f1',
-  },
-  button: {
-    width: 343,
-    height: 48,
-    marginLeft: 35,
-    backgroundColor: '#DB3022',
-    borderRadius: 50,
-  },
-});

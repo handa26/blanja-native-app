@@ -10,6 +10,8 @@ import Home from './src/screens/Home';
 import Profile from './src/screens/Profile';
 import Login from './src/screens/Auth/Login';
 import SignUp from './src/screens/Auth/SignUp';
+import Forgot from './src/screens/Auth/Forgot';
+import Reset from './src/screens/Auth/Reset';
 import Shop from './src/screens/Shop';
 import Bag from './src/screens/Bag';
 import Favorite from './src/screens/Favorite';
@@ -99,6 +101,8 @@ const appRouter = () => {
           <Stack.Screen name="Tab" component={MyTabs} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Signup" component={SignUp} />
+          <Stack.Screen name="Forgot" component={Forgot} />
+          <Stack.Screen name="Reset" component={Reset} />
           <Stack.Screen name="Detail" component={Product} />
           <Stack.Screen name="Notification" component={Notification} />
           <Stack.Screen name="Search" component={Search} />
