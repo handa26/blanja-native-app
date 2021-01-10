@@ -6,13 +6,13 @@ import CustomHeader from '../CustomHeader/CustomHeader';
 import styles from './styles';
 import warning from '../../assets/icons/no-notification.png';
 
-const WarnMessage = ({navigation}) => {
+const Notification = ({navigation}) => {
   return (
     <View>
       <CustomHeader
         leftIcon="arrow-left"
         name="Notification"
-        navigation={navigation}
+        leftIconRoute={() => navigation.goBack()}
       />
       <View style={styles.wrapper}>
         <Image source={warning} style={styles.image} />
@@ -21,4 +21,4 @@ const WarnMessage = ({navigation}) => {
   );
 };
 
-export default WarnMessage;
+export default Notification;

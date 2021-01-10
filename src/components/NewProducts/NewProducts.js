@@ -27,34 +27,7 @@ const NewProducts = ({navigation}) => {
         rightIcon="search"
         rightIconRoute={() => navigation.navigate('Search')}
       />
-      {/* <Header style={styles.header}>
-        <Left>
-          <Button transparent>
-            <Icon
-              name="arrow-left"
-              size={25}
-              onPress={() => navigation.goBack()}
-            />
-          </Button>
-        </Left>
-        <Body style={styles.title}>
-          <Title style={{color: 'black'}}>New Products</Title>
-        </Body>
-        <Right>
-          <Icon
-            name="search"
-            size={25}
-            onPress={() => navigation.navigate('Search')}
-          />
-        </Right>
-      </Header> */}
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around',
-          marginVertical: 15,
-        }}>
+      <View style={styles.productsWrapper}>
         {products.products ? (
           products.products &&
           products.products.map((product) => {
@@ -83,9 +56,10 @@ const NewProducts = ({navigation}) => {
 export default NewProducts;
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: 'white',
-    paddingVertical: 35,
-    marginTop: 20,
+  productsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    marginVertical: 15,
   },
 });

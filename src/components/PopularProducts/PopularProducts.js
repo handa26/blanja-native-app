@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {View, ScrollView, StyleSheet} from 'react-native';
-import {Header, Left, Button, Body, Title, Right, Spinner} from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Spinner} from 'native-base';
 import ProductCard from '../ProductCard/ProductCard';
 import CustomHeader from '../CustomHeader/CustomHeader';
 
@@ -26,18 +25,11 @@ const PopularProducts = ({navigation}) => {
         rightIcon="search"
         rightIconRoute={() => navigation.navigate('Search')}
       />
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-around',
-          marginVertical: 15,
-        }}>
+      <View style={styles.productsWrapper}>
         {productsPopular.products ? (
           productsPopular.products &&
           productsPopular.products.map((product) => {
             let img = product.image.split(',');
-            console.log(img[0]);
             return (
               <ProductCard
                 navigation={navigation}
@@ -61,9 +53,10 @@ const PopularProducts = ({navigation}) => {
 export default PopularProducts;
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: 'white',
-    paddingVertical: 35,
-    marginTop: 20,
+  productsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    marginVertical: 15,
   },
 });
