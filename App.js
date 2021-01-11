@@ -16,6 +16,7 @@ import Shop from './src/screens/Shop';
 import Bag from './src/screens/Bag';
 import Favorite from './src/screens/Favorite';
 import Product from './src/screens/Product';
+import Catalog from './src/screens/Catalog';
 import Notification from './src/components/Notification/Notification';
 import Search from './src/components/Search/Search';
 import MyOrder from './src/components/MyOrder/MyOrder';
@@ -104,6 +105,7 @@ const appRouter = () => {
           <Stack.Screen name="Forgot" component={Forgot} />
           <Stack.Screen name="Reset" component={Reset} />
           <Stack.Screen name="Detail" component={Product} />
+          <Stack.Screen name="Catalog" component={Catalog} />
           <Stack.Screen name="Notification" component={Notification} />
           <Stack.Screen name="Search" component={Search} />
           <Stack.Screen name="Order" component={MyOrder} />

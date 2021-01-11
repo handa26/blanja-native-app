@@ -18,7 +18,13 @@ const ListCategory = ({navigation}) => {
             <Text>Choose category</Text>
           </ListItem>
           <View style={styles.list}>
-            <ListItem>
+            <ListItem
+              onPress={() =>
+                navigation.navigate('Catalog', {
+                  categoryName: 'baju',
+                  title: 'Shirts',
+                })
+              }>
               <Text>Shirts</Text>
             </ListItem>
             <ListItem>
@@ -27,10 +33,23 @@ const ListCategory = ({navigation}) => {
             <ListItem>
               <Text>Jacket</Text>
             </ListItem>
-            <ListItem>
+            <ListItem
+              onPress={() =>
+                navigation.navigate('Catalog', {
+                  categoryName: 'celana',
+                  title: 'Pants',
+                })
+              }>
               <Text>Pants</Text>
             </ListItem>
-            <ListItem last>
+            <ListItem
+              last
+              onPress={() =>
+                navigation.navigate('Catalog', {
+                  categoryName: 'sepatu',
+                  title: 'Shoes',
+                })
+              }>
               <Text>Shoes</Text>
             </ListItem>
           </View>
