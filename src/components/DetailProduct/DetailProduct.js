@@ -8,9 +8,17 @@ import rating from '../../assets/icons/rating-full.png';
 import ProductCard from '../ProductCard/ProductCard';
 import CustomHeader from '../CustomHeader/CustomHeader';
 
-const DetailProduct = ({name, desc, img, brand, price, navigation}) => {
+const DetailProduct = ({
+  name,
+  desc,
+  img,
+  brand,
+  price,
+  navigation,
+  addToCart,
+}) => {
   const [products, setProducts] = useState({});
-  const url = 'http://192.168.8.100:3000/products';
+  const url = 'http://192.168.8.101:3000/products';
 
   useEffect(() => {
     axios
@@ -44,7 +52,7 @@ const DetailProduct = ({name, desc, img, brand, price, navigation}) => {
             <Image source={rating} />
           </View>
           <Text style={styles.textDesc}>{desc}</Text>
-          <Button style={styles.button}>
+          <Button style={styles.button} onPress={addToCart}>
             <Text style={{marginLeft: 150, color: 'white'}}>ADD TO CART</Text>
           </Button>
         </View>

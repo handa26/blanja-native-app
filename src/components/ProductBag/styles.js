@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     width: 175,
   },
   productName: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   button: {

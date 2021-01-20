@@ -8,7 +8,7 @@ import ProductCard from '../components/ProductCard/ProductCard';
 const Catalog = ({navigation, route}) => {
   const {categoryName, title} = route.params;
   const [products, setProducts] = useState({});
-  const url = `http://192.168.8.100:3000/search?category=${categoryName}`;
+  const url = `http://192.168.8.101:3000/search?category=${categoryName}`;
 
   useEffect(() => {
     axios

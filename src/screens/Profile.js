@@ -1,13 +1,50 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import axios from 'axios';
+import {connect} from 'react-redux';
+import {logout} from '../public/redux/action/authAction';
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {Header, Button, Right, List, ListItem, Text, Left} from 'native-base';
+import {Right, List, ListItem, Text, Left} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 
 import john from '../assets/john-lennon.jpg';
 
-const Profile = ({navigation}) => {
+const Profile = ({navigation, isLogin, token, logoutRedux, level, id}) => {
+  console.log('Is login?', isLogin);
+  console.log('Here token', token);
+  console.log('your level', level);
+  console.log('your user id', id);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (!isLogin) {
+        navigation.navigate('Login');
+      }
+    });
+
+    return unsubscribe;
+    // if (!isLogin) {
+    //   navigation.navigate('Login');
+    // }
+  }, [isLogin, navigation]);
+
+  const logOut = async () => {
+    try {
+      console.log('Token acquired', token);
+      const data = '';
+      await axios.post('http://192.168.8.101:3000/auth/logout', data, {
+        headers: {
+          'x-access-token': 'Bearer ' + token,
+        },
+      });
+      logoutRedux();
+      navigation.navigate('Login');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View>
       <CustomHeader
@@ -32,7 +69,31 @@ const Profile = ({navigation}) => {
       </View>
       <View>
         <List style={{marginRight: 15, marginTop: 20}}>
-          <ListItem onPress={() => navigation.navigate('Order')}>
+          {level === 'seller' ? (
+            <ListItem onPress={() => navigation.navigate('AddProduct')}>
+              <Left>
+                <View>
+                  <Text style={styles.headline}>My Products</Text>
+                </View>
+              </Left>
+              <Right>
+                <Icon name="chevron-right" />
+              </Right>
+            </ListItem>
+          ) : (
+            <ListItem onPress={() => navigation.navigate('Order')}>
+              <Left>
+                <View>
+                  <Text style={styles.headline}>My orders</Text>
+                  <Text style={styles.textDetail}>Already have 5 orders</Text>
+                </View>
+              </Left>
+              <Right>
+                <Icon name="chevron-right" />
+              </Right>
+            </ListItem>
+          )}
+          {/* <ListItem onPress={() => navigation.navigate('Order')}>
             <Left>
               <View>
                 <Text style={styles.headline}>My orders</Text>
@@ -42,7 +103,7 @@ const Profile = ({navigation}) => {
             <Right>
               <Icon name="chevron-right" />
             </Right>
-          </ListItem>
+          </ListItem> */}
           <ListItem onPress={() => navigation.navigate('Shipping')}>
             <Left>
               <View>
@@ -72,20 +133,40 @@ const Profile = ({navigation}) => {
               <Icon name="chevron-right" />
             </Right>
           </ListItem>
+          <ListItem onPress={logOut}>
+            <Left>
+              <View>
+                <Text style={styles.headline}>Logout</Text>
+              </View>
+            </Left>
+            <Right>
+              <Icon name="chevron-right" />
+            </Right>
+          </ListItem>
         </List>
       </View>
     </View>
   );
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+  return {
+    isLogin: state.auth.isLogin,
+    token: state.auth.token,
+    id: state.auth.id,
+    level: state.auth.level,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logoutRedux: () => dispatch(logout()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: 'white',
-    paddingVertical: 35,
-    marginTop: 20,
-  },
   headline: {
     fontSize: 20,
     fontWeight: 'bold',

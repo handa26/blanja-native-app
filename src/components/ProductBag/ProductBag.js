@@ -4,17 +4,16 @@ import {Button} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
-import imageSample from '../../assets/blouse.jpg';
 
-const ProductBag = () => {
+const ProductBag = ({imgUrl, productName, price, remove}) => {
   const [counter, setCounter] = React.useState(2);
   return (
     <View style={styles.cardWrapper}>
-      <Image style={styles.image} source={imageSample} />
+      <Image style={styles.image} source={{uri: imgUrl}} />
       <View>
         <View style={styles.headerProduct}>
-          <Text style={styles.productName}>T-Shirt</Text>
-          <Icon name="ellipsis-v" size={20} />
+          <Text style={styles.productName}>{productName}</Text>
+          <Icon onPress={remove} name="trash" size={20} color="red" />
         </View>
         <View style={styles.midProduct}>
           <Text>Color: Gray</Text>
@@ -37,7 +36,7 @@ const ProductBag = () => {
             </Button>
           </View>
           <View>
-            <Text style={styles.price}>Rp. 20.000</Text>
+            <Text style={styles.price}>Rp. {price}</Text>
           </View>
         </View>
       </View>

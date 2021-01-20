@@ -1,4 +1,7 @@
 import React from 'react';
+import axios from 'axios';
+import {connect} from 'react-redux';
+import {login} from '../../public/redux/action/authAction';
 import {View, TextInput} from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,8 +10,33 @@ import HeadlineText from '../../components/HeadlineText/HeadlineText';
 
 import styles from './styles';
 
-const Login = ({navigation}) => {
-  const [value, onChangeText] = React.useState('');
+const Login = ({navigation, login}) => {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const handleSubmit = () => {
+    const data = {
+      email: email,
+      password: password,
+    };
+    axios
+      .post('http://192.168.8.101:3000/auth/login', data)
+      .then(async (res) => {
+        console.log(res);
+        // console.log('This is token', res.data.data.token);
+        // console.log('This is user id', res.data.data.id);
+        // console.log('This is user types', res.data.data.type);
+
+        const token = res.data.data.token;
+        const id = res.data.data.id;
+        const types = res.data.data.type;
+        login(token, id, types);
+        console.log('Successfully login');
+        navigation.navigate('Profile');
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Container>
       <CustomHeader
@@ -19,15 +47,19 @@ const Login = ({navigation}) => {
       <Content style={styles.formWrapper}>
         <View style={styles.formBox}>
           <TextInput
-            onChangeText={(val) => onChangeText(val)}
+            onChangeText={(val) => setEmail(val)}
+            defaultValue={email}
             style={styles.inputBox}
           />
-          <Text onChangeText={(val) => onChangeText(val)} style={styles.text}>
-            Email
-          </Text>
+          <Text style={styles.text}>Email</Text>
         </View>
-        <View onChangeText={(val) => onChangeText(val)} style={styles.formBox}>
-          <TextInput secureTextEntry style={styles.inputBox} />
+        <View style={styles.formBox}>
+          <TextInput
+            secureTextEntry
+            onChangeText={(val) => setPassword(val)}
+            defaultValue={password}
+            style={styles.inputBox}
+          />
           <Text style={styles.text}>Password</Text>
         </View>
         <View style={styles.textBox}>
@@ -39,9 +71,7 @@ const Login = ({navigation}) => {
             onPress={() => navigation.navigate('Forgot')}
           />
         </View>
-        <Button
-          style={styles.button}
-          onPress={() => navigation.navigate('Home')}>
+        <Button style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Login</Text>
         </Button>
       </Content>
@@ -49,4 +79,10 @@ const Login = ({navigation}) => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (token, id, level) => dispatch(login(token, id, level)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Login);

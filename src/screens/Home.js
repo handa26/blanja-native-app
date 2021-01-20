@@ -9,7 +9,7 @@ import HeadlineText from '../components/HeadlineText/HeadlineText';
 const Home = ({navigation}) => {
   const [products, setProducts] = useState({});
   const [productsPopular, setProductsPopular] = useState({});
-  const url = 'http://192.168.8.100:3000/products';
+  const url = 'http://192.168.8.101:3000/products';
 
   useEffect(() => {
     axios

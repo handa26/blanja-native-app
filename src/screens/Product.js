@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux';
+import {addToCart} from '../public/redux/action/cartAction';
 import axios from 'axios';
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import {Spinner} from 'native-base';
 
 import DetailProduct from '../components/DetailProduct/DetailProduct';
 
-const Product = ({route, navigation}) => {
+const Product = ({route, navigation, addToCart}) => {
   const [product, setProduct] = useState({});
   const [image, setImage] = useState({});
   const {Itemid} = route.params;
-  const url = 'http://192.168.8.100:3000/product/' + Itemid;
+  const url = 'http://192.168.8.101:3000/product/' + Itemid;
 
   useEffect(() => {
     axios
@@ -34,6 +36,21 @@ const Product = ({route, navigation}) => {
           brand={product.product_brand}
           price={product.product_price}
           navigation={navigation}
+          addToCart={() => {
+            addToCart(
+              product.id,
+              image[0],
+              product.product_price,
+              product.product_name,
+            );
+            console.log('Added to cart');
+            Alert.alert(
+              'Add to cart',
+              `${product.product_name} added to cart`,
+              [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+              {cancelable: false},
+            );
+          }}
         />
       ) : (
         <Spinner />
@@ -42,4 +59,11 @@ const Product = ({route, navigation}) => {
   );
 };
 
-export default Product;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (id, image, price, productName) =>
+      dispatch(addToCart(id, image, price, productName)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Product);

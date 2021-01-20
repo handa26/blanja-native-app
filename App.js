@@ -1,5 +1,9 @@
 import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
+import {Provider} from 'react-redux';
+import store from './src/public/redux/store';
+import {PersistGate} from 'redux-persist/es/integration/react';
+import {persistStore} from 'redux-persist';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -17,6 +21,9 @@ import Bag from './src/screens/Bag';
 import Favorite from './src/screens/Favorite';
 import Product from './src/screens/Product';
 import Catalog from './src/screens/Catalog';
+import Checkout from './src/screens/Checkout';
+import Success from './src/screens/Success';
+import AddProduct from './src/screens/AddProduct';
 import Notification from './src/components/Notification/Notification';
 import Search from './src/components/Search/Search';
 import MyOrder from './src/components/MyOrder/MyOrder';
@@ -27,6 +34,7 @@ import PopularProducts from './src/components/PopularProducts/PopularProducts';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const persistedStore = persistStore(store);
 
 function MyTabs() {
   return (
@@ -98,22 +106,32 @@ const appRouter = () => {
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator headerMode="none">
-          <Stack.Screen name="Tab" component={MyTabs} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Signup" component={SignUp} />
-          <Stack.Screen name="Forgot" component={Forgot} />
-          <Stack.Screen name="Reset" component={Reset} />
-          <Stack.Screen name="Detail" component={Product} />
-          <Stack.Screen name="Catalog" component={Catalog} />
-          <Stack.Screen name="Notification" component={Notification} />
-          <Stack.Screen name="Search" component={Search} />
-          <Stack.Screen name="Order" component={MyOrder} />
-          <Stack.Screen name="Shipping" component={Shipping} />
-          <Stack.Screen name="Setup" component={Setup} />
-          <Stack.Screen name="NewProducts" component={NewProducts} />
-          <Stack.Screen name="PopularProducts" component={PopularProducts} />
-        </Stack.Navigator>
+        <Provider store={store}>
+          <PersistGate persistor={persistedStore} loading={null}>
+            <Stack.Navigator headerMode="none">
+              <Stack.Screen name="Tab" component={MyTabs} />
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Signup" component={SignUp} />
+              <Stack.Screen name="Forgot" component={Forgot} />
+              <Stack.Screen name="Reset" component={Reset} />
+              <Stack.Screen name="Detail" component={Product} />
+              <Stack.Screen name="Catalog" component={Catalog} />
+              <Stack.Screen name="Notification" component={Notification} />
+              <Stack.Screen name="Search" component={Search} />
+              <Stack.Screen name="Order" component={MyOrder} />
+              <Stack.Screen name="Shipping" component={Shipping} />
+              <Stack.Screen name="Checkout" component={Checkout} />
+              <Stack.Screen name="Success" component={Success} />
+              <Stack.Screen name="AddProduct" component={AddProduct} />
+              <Stack.Screen name="Setup" component={Setup} />
+              <Stack.Screen name="NewProducts" component={NewProducts} />
+              <Stack.Screen
+                name="PopularProducts"
+                component={PopularProducts}
+              />
+            </Stack.Navigator>
+          </PersistGate>
+        </Provider>
       </NavigationContainer>
     </>
   );

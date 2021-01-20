@@ -7,7 +7,7 @@ import CustomHeader from '../CustomHeader/CustomHeader';
 
 const PopularProducts = ({navigation}) => {
   const [productsPopular, setProductsPopular] = useState({});
-  const url = 'http://192.168.8.100:3000/products';
+  const url = 'http://192.168.8.101:3000/products';
 
   useEffect(() => {
     axios

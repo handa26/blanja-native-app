@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {View, TextInput} from 'react-native';
+import {Alert, View, TextInput} from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomHeader from '../../components/CustomHeader/CustomHeader';
@@ -13,6 +13,30 @@ const SignUp = ({navigation}) => {
   const [store, setStore] = useState('');
   const [number, setNumber] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleSubmit = () => {
+    const data = {
+      name: name,
+      email: email,
+      store_name: store,
+      telephone: number,
+      user_type: 1,
+      password: password,
+    };
+
+    axios
+      .post('http://192.168.8.101:3000/auth/register', data)
+      .then(async (res) => {
+        Alert.alert(
+          'Register',
+          'Successfully register',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+          {cancelable: false},
+        );
+        navigation.navigate('Home');
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Container>
@@ -72,7 +96,7 @@ const SignUp = ({navigation}) => {
             onPress={() => navigation.navigate('Login')}
           />
         </View>
-        <Button style={styles.button}>
+        <Button style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </Button>
       </Content>
