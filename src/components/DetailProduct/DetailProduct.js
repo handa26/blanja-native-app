@@ -3,6 +3,7 @@ import axios from 'axios';
 import {ScrollView, View, Text, Image, StyleSheet} from 'react-native';
 import {Left, Button, Right, List, ListItem, H2} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {API_URL_DEVELOPMENT} from '@env';
 
 import rating from '../../assets/icons/rating-full.png';
 import ProductCard from '../ProductCard/ProductCard';
@@ -18,14 +19,14 @@ const DetailProduct = ({
   addToCart,
 }) => {
   const [products, setProducts] = useState({});
-  const url = 'http://192.168.8.101:3000/products';
+  const url = `${API_URL_DEVELOPMENT}products`;
 
   useEffect(() => {
     axios
       .get(url + '?page=1&limit=8')
       .then(({data}) => setProducts(data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [url]);
 
   return (
     <ScrollView>
@@ -92,7 +93,7 @@ const DetailProduct = ({
                 <ProductCard
                   navigation={navigation}
                   key={product.id}
-                  imgUrl={img[0].replace('localhost', '192.168.8.100')}
+                  imgUrl={img[0].replace('localhost', '192.168.8.101')}
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}

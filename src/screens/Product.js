@@ -4,6 +4,7 @@ import {addToCart} from '../public/redux/action/cartAction';
 import axios from 'axios';
 import {View, Text, Alert} from 'react-native';
 import {Spinner} from 'native-base';
+import {API_URL_DEVELOPMENT} from '@env';
 
 import DetailProduct from '../components/DetailProduct/DetailProduct';
 
@@ -11,14 +12,14 @@ const Product = ({route, navigation, addToCart}) => {
   const [product, setProduct] = useState({});
   const [image, setImage] = useState({});
   const {Itemid} = route.params;
-  const url = 'http://192.168.8.101:3000/product/' + Itemid;
+  const url = `${API_URL_DEVELOPMENT}product/` + Itemid;
 
   useEffect(() => {
     axios
       .get(url)
       .then(({data}) => {
         let splitter = data.image.split(',');
-        setImage(splitter.map((e) => e.replace('localhost', '192.168.8.100')));
+        setImage(splitter.map((e) => e.replace('localhost', '192.168.8.101')));
         setProduct(data);
       })
       .catch((err) => console.log(err));

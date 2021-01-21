@@ -5,17 +5,18 @@ import {Spinner} from 'native-base';
 import ProductCard from '../components/ProductCard/ProductCard';
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import bags from '../assets/icons/bags.png';
+import {API_URL_DEVELOPMENT} from '@env';
 
 const Favorite = ({navigation}) => {
   const [productsPopular, setProductsPopular] = useState({});
-  const url = 'http://192.168.8.101:3000/products';
+  const url = `${API_URL_DEVELOPMENT}products`;
 
   useEffect(() => {
     axios
       .get(url + '/popular?page=1&limit=15')
       .then(({data}) => setProductsPopular(data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [url]);
 
   return (
     <ScrollView>
@@ -51,7 +52,7 @@ const Favorite = ({navigation}) => {
               <ProductCard
                 navigation={navigation}
                 key={product.id}
-                imgUrl={img[0].replace('localhost', '192.168.8.100')}
+                imgUrl={img[0].replace('localhost', '192.168.8.101')}
                 name={product.product_name}
                 brand={product.product_brand}
                 price={product.product_price}

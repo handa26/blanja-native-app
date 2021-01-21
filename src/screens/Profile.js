@@ -7,14 +7,26 @@ import {Right, List, ListItem, Text, Left} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 import CustomHeader from '../components/CustomHeader/CustomHeader';
+import {API_URL_DEVELOPMENT} from '@env';
 
 import john from '../assets/john-lennon.jpg';
 
-const Profile = ({navigation, isLogin, token, logoutRedux, level, id}) => {
+const Profile = ({
+  navigation,
+  isLogin,
+  token,
+  logoutRedux,
+  level,
+  id,
+  name,
+  email,
+}) => {
   console.log('Is login?', isLogin);
   console.log('Here token', token);
   console.log('your level', level);
   console.log('your user id', id);
+  console.log('Your name', name);
+  console.log('Your email', email);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -33,7 +45,7 @@ const Profile = ({navigation, isLogin, token, logoutRedux, level, id}) => {
     try {
       console.log('Token acquired', token);
       const data = '';
-      await axios.post('http://192.168.8.101:3000/auth/logout', data, {
+      await axios.post(`${API_URL_DEVELOPMENT}auth/logout`, data, {
         headers: {
           'x-access-token': 'Bearer ' + token,
         },
@@ -61,10 +73,8 @@ const Profile = ({navigation, isLogin, token, logoutRedux, level, id}) => {
           />
         </TouchableOpacity>
         <View style={{flexDirection: 'column', marginLeft: 10}}>
-          <Text style={{fontSize: 18, fontWeight: 'bold'}}>John Lennon</Text>
-          <Text style={{fontSize: 14, color: 'gray'}}>
-            notacutuallylennon@fake.com
-          </Text>
+          <Text style={{fontSize: 18, fontWeight: 'bold'}}>{name}</Text>
+          <Text style={{fontSize: 14, color: 'gray'}}>{email}</Text>
         </View>
       </View>
       <View>
@@ -93,17 +103,6 @@ const Profile = ({navigation, isLogin, token, logoutRedux, level, id}) => {
               </Right>
             </ListItem>
           )}
-          {/* <ListItem onPress={() => navigation.navigate('Order')}>
-            <Left>
-              <View>
-                <Text style={styles.headline}>My orders</Text>
-                <Text style={styles.textDetail}>Already have 5 orders</Text>
-              </View>
-            </Left>
-            <Right>
-              <Icon name="chevron-right" />
-            </Right>
-          </ListItem> */}
           <ListItem onPress={() => navigation.navigate('Shipping')}>
             <Left>
               <View>
@@ -155,6 +154,8 @@ const mapStateToProps = (state) => {
     token: state.auth.token,
     id: state.auth.id,
     level: state.auth.level,
+    name: state.auth.name,
+    email: state.auth.email,
   };
 };
 

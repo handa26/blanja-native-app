@@ -5,6 +5,8 @@ import {Button, Text, Content, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomHeader from '../../components/CustomHeader/CustomHeader';
 import HeadlineText from '../../components/HeadlineText/HeadlineText';
+import {API_URL_DEVELOPMENT} from '@env';
+
 import styles from './styles';
 
 const SignUp = ({navigation}) => {
@@ -25,7 +27,7 @@ const SignUp = ({navigation}) => {
     };
 
     axios
-      .post('http://192.168.8.101:3000/auth/register', data)
+      .post(`${API_URL_DEVELOPMENT}auth/register`, data)
       .then(async (res) => {
         Alert.alert(
           'Register',
@@ -33,7 +35,7 @@ const SignUp = ({navigation}) => {
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           {cancelable: false},
         );
-        navigation.navigate('Home');
+        navigation.navigate('Login');
       })
       .catch((err) => console.log(err));
   };

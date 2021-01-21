@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {View, ScrollView, StatusBar, Text} from 'react-native';
+import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
 
 import ImageHeader from '../components/ImageHeader/ImageHeader';
 import ProductCard from '../components/ProductCard/ProductCard';
@@ -9,21 +10,25 @@ import HeadlineText from '../components/HeadlineText/HeadlineText';
 const Home = ({navigation}) => {
   const [products, setProducts] = useState({});
   const [productsPopular, setProductsPopular] = useState({});
-  const url = 'http://192.168.8.101:3000/products';
+  const url = `${API_URL_DEVELOPMENT}products`;
 
   useEffect(() => {
     axios
       .get(url + '?page=1&limit=8')
-      .then(({data}) => setProducts(data))
+      .then(({data}) => {
+        setProducts(data);
+      })
       .catch((err) => console.log(err));
-  }, []);
+  }, [url]);
+
+  console.log(products);
 
   useEffect(() => {
     axios
       .get(url + '/popular?page=1&limit=8')
       .then(({data}) => setProductsPopular(data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [url]);
 
   return (
     <View>
@@ -47,7 +52,7 @@ const Home = ({navigation}) => {
                 <ProductCard
                   navigation={navigation}
                   key={product.id}
-                  imgUrl={img[0].replace('localhost', '192.168.8.100')}
+                  imgUrl={img[0].replace('localhost', '192.168.8.101')}
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}
@@ -75,7 +80,7 @@ const Home = ({navigation}) => {
               return (
                 <ProductCard
                   key={product.id}
-                  imgUrl={img[0].replace('localhost', '192.168.8.100')}
+                  imgUrl={img[0].replace('localhost', '192.168.8.101')}
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}

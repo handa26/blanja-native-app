@@ -19,7 +19,7 @@ const Checkout = ({navigation, id}) => {
     };
 
     axios
-      .post('http://192.168.8.101:3000/history', data)
+      .post('http://54.237.63.225:3000/history', data)
       .then((res) => {
         console.log('Inside history endpoint', res);
         Alert.alert(

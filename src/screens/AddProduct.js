@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
-import {View, Alert, StyleSheet, TextInput, ScrollView} from 'react-native';
+import {View, Alert, StyleSheet, TextInput} from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
+import {API_URL_DEVELOPMENT} from '@env';
 
 const AddProduct = ({navigation}) => {
   const [productName, setProductName] = useState('');
@@ -35,9 +36,10 @@ const AddProduct = ({navigation}) => {
     data.append('size', size);
     data.append('product_color', color);
     data.append('product_qty', quantity);
+    data.append('product_rating', rating);
 
     axios
-      .post('http://192.168.8.101:3000/product', data, config)
+      .post(`${API_URL_DEVELOPMENT}product`, data, config)
       .then((res) => {
         console.log(res);
         Alert.alert(

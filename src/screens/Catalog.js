@@ -4,11 +4,13 @@ import {View, StyleSheet, ScrollView} from 'react-native';
 import {Spinner} from 'native-base';
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import ProductCard from '../components/ProductCard/ProductCard';
+import {API_URL_DEVELOPMENT} from '@env';
 
 const Catalog = ({navigation, route}) => {
   const {categoryName, title} = route.params;
   const [products, setProducts] = useState({});
-  const url = `http://192.168.8.101:3000/search?category=${categoryName}`;
+  // const url = `http://54.237.63.225:3000/search?category=${categoryName}`;
+  const url = `${API_URL_DEVELOPMENT}search?category=${categoryName}`;
 
   useEffect(() => {
     axios
@@ -37,7 +39,7 @@ const Catalog = ({navigation, route}) => {
               <ProductCard
                 navigation={navigation}
                 key={product.id}
-                imgUrl={img[0].replace('localhost', '192.168.8.100')}
+                imgUrl={img[0].replace('localhost', '192.168.8.101')}
                 name={product.product_name}
                 brand={product.product_brand}
                 price={product.product_price}
