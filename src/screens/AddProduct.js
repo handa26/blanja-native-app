@@ -1,15 +1,27 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
-import {View, Alert, StyleSheet, TextInput} from 'react-native';
+import {
+  View,
+  Alert,
+  StyleSheet,
+  TextInput,
+  Platform,
+  Image,
+  ScrollView,
+} from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {Picker} from '@react-native-picker/picker';
+import ImagePicker from 'react-native-image-crop-picker';
+
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 import {API_URL_DEVELOPMENT} from '@env';
 
 const AddProduct = ({navigation}) => {
   const [productName, setProductName] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState();
   const [filePath, setFilePath] = useState([]);
   const [price, setPrice] = useState('');
   const [desc, setDesc] = useState('');
@@ -18,6 +30,7 @@ const AddProduct = ({navigation}) => {
   const [brand, setBrand] = useState('');
   const [quantity, setQuantity] = useState('');
   const [color, setColor] = useState('');
+  const [capture, setCapture] = useState({});
   const token = useSelector((state) => state.auth.token);
 
   const handleSubmit = async () => {
@@ -37,6 +50,26 @@ const AddProduct = ({navigation}) => {
     data.append('product_color', color);
     data.append('product_qty', quantity);
     data.append('product_rating', rating);
+    for (let i = 0; i < filePath.length; i++) {
+      data.append('image', {
+        name: filePath[i].path.split('/').pop(),
+        type: filePath[i].mime,
+        uri:
+          Platform.OS === 'android'
+            ? filePath[i].path
+            : filePath[i].path.replace('file://', ''),
+      });
+    }
+
+    capture.length > 0;
+    data.append('image', {
+      name: capture.path.split('/').pop(),
+      type: capture.mime,
+      uri:
+        Platform.OS === 'android'
+          ? capture.path
+          : capture.path.replace('file://', ''),
+    });
 
     axios
       .post(`${API_URL_DEVELOPMENT}product`, data, config)
@@ -48,6 +81,32 @@ const AddProduct = ({navigation}) => {
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           {cancelable: false},
         );
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const chooseImages = () => {
+    ImagePicker.openPicker({
+      multiple: true,
+      mediaType: 'photo',
+    })
+      .then((images) => {
+        console.log(images);
+        setFilePath(images);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const captureImages = () => {
+    ImagePicker.openCamera({
+      width: 200,
+      height: 200,
+      cropping: true,
+      mediaType: 'photo',
+    })
+      .then((images) => {
+        setCapture(images);
+        console.log(images);
       })
       .catch((err) => console.log(err));
   };
@@ -77,6 +136,51 @@ const AddProduct = ({navigation}) => {
           <Text style={styles.text}>Product Brand</Text>
         </View>
         <View style={styles.formBox}>
+          <Text>Choose your product image from your storage</Text>
+          <ScrollView horizontal style={styles.imagesHolder}>
+            {filePath.map((item) => {
+              return (
+                <Image
+                  key={filePath.indexOf(item)}
+                  source={{uri: filePath.length !== 0 ? item.path : ''}}
+                  style={{
+                    width: 200,
+                    height: 200,
+                    marginHorizontal: 10,
+                    alignSelf: 'center',
+                  }}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View style={styles.formBox}>
+          <Button iconLeft block rounded onPress={() => chooseImages()}>
+            <Icon name="plus" size={20} />
+            <Text>Choose an image to upload</Text>
+          </Button>
+        </View>
+        <View style={styles.formBox}>
+          <Text>Capture your product</Text>
+          <ScrollView horizontal style={styles.imagesHolder}>
+            <Image
+              source={{uri: capture.path}}
+              style={{
+                width: 200,
+                height: 200,
+                marginHorizontal: 10,
+                alignSelf: 'center',
+              }}
+            />
+          </ScrollView>
+        </View>
+        <View style={styles.formBox}>
+          <Button iconLeft block rounded onPress={captureImages}>
+            <Icon name="camera" size={20} />
+            <Text>Capture your photo</Text>
+          </Button>
+        </View>
+        <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setDesc(val)}
             defaultValue={desc}
@@ -101,12 +205,15 @@ const AddProduct = ({navigation}) => {
           <Text style={styles.text}>Product Size</Text>
         </View>
         <View style={styles.formBox}>
-          <TextInput
-            onChangeText={(val) => setCategory(val)}
-            defaultValue={category}
-            style={styles.inputBox}
-          />
-          <Text style={styles.text}>Category</Text>
+          <Text>Product category</Text>
+          <Picker
+            selectedValue={category}
+            style={{height: 50, width: 150}}
+            onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}>
+            <Picker.Item label="Shirt" value={1} />
+            <Picker.Item label="Pants" value={2} />
+            <Picker.Item label="Shoes" value={3} />
+          </Picker>
         </View>
         <View style={styles.formBox}>
           <TextInput
@@ -201,5 +308,17 @@ const styles = StyleSheet.create({
   buttonText: {
     position: 'absolute',
     left: 153,
+  },
+  buttonChoose: {
+    width: 200,
+    height: 20,
+    marginLeft: 20,
+  },
+  imagesHolder: {
+    width: 390,
+    height: 250,
+    borderWidth: 1,
+    flexDirection: 'row',
+    borderRadius: 10,
   },
 });
