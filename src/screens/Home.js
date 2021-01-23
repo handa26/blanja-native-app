@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {View, ScrollView, StatusBar, Text} from 'react-native';
-import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT, IP_DEVELOPMENT, API_URL} from '@env';
 
 import ImageHeader from '../components/ImageHeader/ImageHeader';
 import ProductCard from '../components/ProductCard/ProductCard';
