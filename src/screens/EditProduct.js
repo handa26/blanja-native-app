@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {
   View,
-  Alert,
   StyleSheet,
-  TextInput,
-  Platform,
-  Image,
   ScrollView,
+  TextInput,
+  Image,
+  Platform,
+  Alert,
 } from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,18 +19,22 @@ import CustomHeader from '../components/CustomHeader/CustomHeader';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 import {API_URL_DEVELOPMENT} from '@env';
 
-const AddProduct = ({navigation}) => {
+const EditProduct = ({route, navigation}) => {
+  const [product, setProduct] = useState({});
+  const [image, setImage] = useState({});
   const [productName, setProductName] = useState('');
   const [category, setCategory] = useState();
   const [filePath, setFilePath] = useState([]);
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState(0);
   const [desc, setDesc] = useState('');
   const [size, setSize] = useState('');
   const [brand, setBrand] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState([]);
   const [color, setColor] = useState('');
   const [capture, setCapture] = useState({});
   const token = useSelector((state) => state.auth.token);
+  const {Itemid} = route.params;
+  console.log(token);
 
   const handleSubmit = async () => {
     const config = {
@@ -71,18 +75,29 @@ const AddProduct = ({navigation}) => {
     }
 
     axios
-      .post(`${API_URL_DEVELOPMENT}product`, data, config)
+      .patch(`${API_URL_DEVELOPMENT}product/${Itemid}`, data, config)
       .then((res) => {
         console.log(res);
         Alert.alert(
           `Success`,
-          'Successfully added product',
+          'Successfully updated product',
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           {cancelable: false},
         );
       })
       .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL_DEVELOPMENT}product/${Itemid}`)
+      .then(({data}) => {
+        let splitter = data.image.split(',');
+        setImage(splitter.map((e) => e.replace('localhost', '192.168.8.101')));
+        setProduct(data);
+      })
+      .catch((err) => console.log(err));
+  }, [Itemid]);
 
   const chooseImages = () => {
     ImagePicker.openPicker({
@@ -116,12 +131,12 @@ const AddProduct = ({navigation}) => {
         leftIcon="arrow-left"
         leftIconRoute={() => navigation.goBack()}
       />
-      <HeadlineText condition="Add Product" />
-      <Content style={styles.formWrapper}>
+      <HeadlineText condition="Update Product" />
+      <Content>
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setProductName(val)}
-            defaultValue={productName}
+            defaultValue={product.product_name}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Name</Text>
@@ -129,7 +144,7 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setBrand(val)}
-            defaultValue={brand}
+            defaultValue={product.product_brand}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Brand</Text>
@@ -182,7 +197,7 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setDesc(val)}
-            defaultValue={desc}
+            defaultValue={product.product_description}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Description</Text>
@@ -190,7 +205,7 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setPrice(val)}
-            defaultValue={price}
+            defaultValue={String(product.product_price)}
             style={styles.inputBox}
             keyboardType="numeric"
           />
@@ -199,12 +214,21 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setSize(val)}
-            defaultValue={size}
+            defaultValue={String(product.size)}
             style={styles.inputBox}
             keyboardType="numeric"
           />
           <Text style={styles.text}>Product Size</Text>
         </View>
+        {/* <View style={styles.formBox}>
+          <TextInput
+            onChangeText={(val) => setRating(val)}
+            defaultValue={rating}
+            style={styles.inputBox}
+            keyboardType="numeric"
+          />
+          <Text style={styles.text}>Product rating</Text>
+        </View> */}
         <View style={styles.formBox}>
           <Text>Product category</Text>
           <Picker
@@ -219,7 +243,7 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setQuantity(val)}
-            defaultValue={quantity}
+            defaultValue={String(product.product_qty)}
             style={styles.inputBox}
             keyboardType="numeric"
           />
@@ -228,7 +252,7 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setColor(val)}
-            defaultValue={color}
+            defaultValue={product.product_color}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Color</Text>
@@ -237,16 +261,16 @@ const AddProduct = ({navigation}) => {
           style={styles.button}
           onPress={() => {
             handleSubmit();
-            navigation.navigate('Home');
+            navigation.navigate('MyProducts');
           }}>
-          <Text style={styles.buttonText}>Add Now</Text>
+          <Text style={styles.buttonText}>Update Now</Text>
         </Button>
       </Content>
     </Container>
   );
 };
 
-export default AddProduct;
+export default EditProduct;
 
 const styles = StyleSheet.create({
   formWrapper: {
@@ -288,7 +312,7 @@ const styles = StyleSheet.create({
     height: 64,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#f1f1f1',
+    borderColor: 'black',
     padding: 10,
   },
   button: {
@@ -302,7 +326,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     position: 'absolute',
-    left: 153,
+    left: 130,
   },
   buttonChoose: {
     width: 200,

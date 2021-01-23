@@ -24,6 +24,8 @@ import Catalog from './src/screens/Catalog';
 import Checkout from './src/screens/Checkout';
 import Success from './src/screens/Success';
 import AddProduct from './src/screens/AddProduct';
+import MyProducts from './src/screens/MyProducts';
+import EditProduct from './src/screens/EditProduct';
 import Notification from './src/components/Notification/Notification';
 import Search from './src/components/Search/Search';
 import MyOrder from './src/components/MyOrder/MyOrder';
@@ -123,6 +125,8 @@ const appRouter = () => {
               <Stack.Screen name="Checkout" component={Checkout} />
               <Stack.Screen name="Success" component={Success} />
               <Stack.Screen name="AddProduct" component={AddProduct} />
+              <Stack.Screen name="MyProducts" component={MyProducts} />
+              <Stack.Screen name="EditProduct" component={EditProduct} />
               <Stack.Screen name="Setup" component={Setup} />
               <Stack.Screen name="NewProducts" component={NewProducts} />
               <Stack.Screen

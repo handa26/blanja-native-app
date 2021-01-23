@@ -80,7 +80,7 @@ const Profile = ({
       <View>
         <List style={{marginRight: 15, marginTop: 20}}>
           {level === 'seller' ? (
-            <ListItem onPress={() => navigation.navigate('AddProduct')}>
+            <ListItem onPress={() => navigation.navigate('MyProducts')}>
               <Left>
                 <View>
                   <Text style={styles.headline}>My Products</Text>
