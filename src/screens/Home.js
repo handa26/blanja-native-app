@@ -21,8 +21,6 @@ const Home = ({navigation}) => {
       .catch((err) => console.log(err));
   }, [url]);
 
-  console.log(products);
-
   useEffect(() => {
     axios
       .get(url + '/popular?page=1&limit=8')
@@ -47,7 +45,6 @@ const Home = ({navigation}) => {
           {products.products &&
             products.products.map((product) => {
               let img = product.image.split(',');
-              console.log(img[0]);
               return (
                 <ProductCard
                   navigation={navigation}
@@ -76,7 +73,6 @@ const Home = ({navigation}) => {
           {productsPopular.products &&
             productsPopular.products.map((product) => {
               let img = product.image.split(',');
-              console.log(product.id);
               return (
                 <ProductCard
                   key={product.id}
