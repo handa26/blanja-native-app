@@ -45,6 +45,13 @@ const styles = StyleSheet.create({
   },
   counterNum: {marginTop: 6, marginHorizontal: 10},
   price: {marginTop: 7},
+  imageWrapper: {
+    position: 'relative',
+  },
+  checkBox: {
+    position: 'absolute',
+    top: 0,
+  },
 });
 
 export default styles;

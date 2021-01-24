@@ -2,14 +2,37 @@ import React from 'react';
 import {View, Text, Image} from 'react-native';
 import {Button} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CheckBox from '@react-native-community/checkbox';
 
 import styles from './styles';
+import {COLOR_DISABLE, COLOR_MAIN} from '../../utils/constants';
 
-const ProductBag = ({imgUrl, productName, price, remove}) => {
-  const [counter, setCounter] = React.useState(2);
+const ProductBag = ({
+  imgUrl,
+  productName,
+  price,
+  remove,
+  picked,
+  status,
+  min,
+  plus,
+  qty,
+}) => {
   return (
     <View style={styles.cardWrapper}>
-      <Image style={styles.image} source={{uri: imgUrl}} />
+      <View style={styles.imageWrapper}>
+        <Image style={styles.image} source={{uri: imgUrl}} />
+        <CheckBox
+          disabled={false}
+          style={styles.checkBox}
+          value={status}
+          onChange={picked}
+          tintColors={{
+            true: COLOR_MAIN,
+            false: COLOR_DISABLE,
+          }}
+        />
+      </View>
       <View>
         <View style={styles.headerProduct}>
           <Text style={styles.productName}>{productName}</Text>
@@ -21,17 +44,11 @@ const ProductBag = ({imgUrl, productName, price, remove}) => {
         </View>
         <View style={styles.counterWrapper}>
           <View style={{flexDirection: 'row'}}>
-            <Button
-              style={styles.button}
-              rounded
-              onPress={() => setCounter(counter - 1)}>
+            <Button style={styles.button} rounded onPress={min}>
               <Icon name="minus" />
             </Button>
-            <Text style={styles.counterNum}>{counter}</Text>
-            <Button
-              style={styles.button}
-              rounded
-              onPress={() => setCounter(counter + 1)}>
+            <Text style={styles.counterNum}>{qty}</Text>
+            <Button style={styles.button} rounded onPress={plus}>
               <Icon name="plus" />
             </Button>
           </View>

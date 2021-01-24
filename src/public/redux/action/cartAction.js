@@ -8,7 +8,41 @@ export const addToCart = (itemId, image, price, productName) => {
       image: image,
       price: price,
       productName: productName,
+      pick: true,
     },
+  };
+};
+
+export const plusQty = (id) => {
+  return {
+    type: actionTypes.PLUS_QTY,
+    payload: {
+      id,
+    },
+  };
+};
+
+export const minQty = (id) => {
+  return {
+    type: actionTypes.MIN_QTY,
+    payload: {
+      id,
+    },
+  };
+};
+
+export const pickCart = (id) => {
+  return {
+    type: actionTypes.PICK_CART,
+    payload: {
+      id,
+    },
+  };
+};
+
+export const clearCart = () => {
+  return {
+    type: actionTypes.CLEAR_CART,
   };
 };
 

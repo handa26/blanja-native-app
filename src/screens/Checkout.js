@@ -1,30 +1,33 @@
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import {View, ScrollView, StyleSheet, Alert} from 'react-native';
 import {Button, Text} from 'native-base';
+
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import ShippingCard from '../components/ShippingCard/ShippingCard';
 import CheckboxPayments from '../components/CheckboxPayments/CheckboxPayments';
+import {API_URL_DEVELOPMENT} from '@env';
 
-const Checkout = ({navigation, id}) => {
+const Checkout = ({navigation, id, route}) => {
+  const {totalPrice, totalItems} = route.params;
+
   const postTransaction = async () => {
     // const user_id = await AsyncStorage.getItem('userid');
     const user_id = id;
     const data = {
       user_id: user_id,
-      qty: 2,
-      price: 50000,
+      qty: totalItems,
+      price: totalPrice,
     };
 
     axios
-      .post('http://54.237.63.225:3000/history', data)
+      .post(`${API_URL_DEVELOPMENT}history`, data)
       .then((res) => {
         console.log('Inside history endpoint', res);
         Alert.alert(
-          `Checkout Berhasil !!!`,
-          'Ayo Belanja Lagi :)',
+          `Checkout succeed`,
+          "C'mon shopping again!",
           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           {cancelable: false},
         );
@@ -54,7 +57,7 @@ const Checkout = ({navigation, id}) => {
       <View style={styles.bottomNav}>
         <View style={styles.total}>
           <Text>Total amount:</Text>
-          <Text>Rp. 10.000.00</Text>
+          <Text>Rp. {totalPrice.toFixed(2)}</Text>
         </View>
         <Button
           style={styles.button}
