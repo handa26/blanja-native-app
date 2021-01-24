@@ -31,6 +31,7 @@ const AddProduct = ({navigation}) => {
   const [color, setColor] = useState('');
   const [capture, setCapture] = useState({});
   const token = useSelector((state) => state.auth.token);
+  const userId = useSelector((state) => state.auth.id);
 
   const handleSubmit = async () => {
     const config = {
@@ -48,6 +49,7 @@ const AddProduct = ({navigation}) => {
     data.append('size', size);
     data.append('product_color', color);
     data.append('product_qty', quantity);
+    data.append('user_id', userId);
     for (let i = 0; i < filePath.length; i++) {
       data.append('image', {
         name: filePath[i].path.split('/').pop(),

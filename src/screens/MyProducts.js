@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import {connect} from 'react-redux';
 import {useSelector} from 'react-redux';
 import {View, StyleSheet, Alert} from 'react-native';
 import {
@@ -21,21 +22,22 @@ import CustomHeader from '../components/CustomHeader/CustomHeader';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 import {API_URL_DEVELOPMENT} from '@env';
 
-const MyProducts = ({navigation}) => {
-  const [products, setProducts] = useState({});
+const MyProducts = ({navigation, id}) => {
+  const [products, setProducts] = useState();
   const url = `${API_URL_DEVELOPMENT}products`;
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     axios
-      .get(url + '?page=1&limit=8')
+      .get(`${url}/user/${id}`)
       .then(({data}) => {
-        setProducts(data);
+        setProducts(data.data);
+        // console.log(data.data);
       })
       .catch((err) => console.log(err));
-  }, [url]);
+  }, [id, url]);
 
-  const deleteProduct = (id, name) => {
+  const deleteProduct = (idProduct, name) => {
     Alert.alert(
       'Delete Product',
       `Are you sure want to delete ${name} ?`,
@@ -56,7 +58,7 @@ const MyProducts = ({navigation}) => {
               },
             };
             await axios
-              .delete(`${API_URL_DEVELOPMENT}product/${id}`, config)
+              .delete(`${API_URL_DEVELOPMENT}product/${idProduct}`, config)
               .then((res) => console.log(res))
               .catch((err) => {
                 console.log(err);
@@ -78,9 +80,9 @@ const MyProducts = ({navigation}) => {
       <HeadlineText condition="List Products" />
       <Content>
         <List style={{marginBottom: 100}}>
-          {products.products ? (
-            products.products &&
-            products.products.map((product) => {
+          {products ? (
+            products &&
+            products.map((product) => {
               let img = product.image.split(',');
               return (
                 <ListItem thumbnail key={product.id}>
@@ -128,49 +130,6 @@ const MyProducts = ({navigation}) => {
           ) : (
             <Spinner />
           )}
-          {/* {products.products &&
-            products.products.map((product) => {
-              let img = product.image.split(',');
-              return (
-                <ListItem thumbnail key={product.id}>
-                  <Left>
-                    <Thumbnail
-                      square
-                      source={{
-                        uri: img[0].replace('localhost', '192.168.8.101'),
-                      }}
-                    />
-                  </Left>
-                  <Body>
-                    <Text>{product.product_name}</Text>
-                    <Text note numberOfLines={1}>
-                      {product.product_description}
-                    </Text>
-                  </Body>
-                  <Right>
-                    <Button transparent>
-                      <Icon
-                        name="edit"
-                        size={25}
-                        color="black"
-                        onPress={() =>
-                          navigation.navigate('EditProduct', {
-                            Itemid: product.id,
-                            otherParams: 'hello',
-                          })
-                        }
-                      />
-                      <Icon
-                        name="trash-o"
-                        size={25}
-                        color="red"
-                        style={{marginLeft: 10}}
-                      />
-                    </Button>
-                  </Right>
-                </ListItem>
-              );
-            })} */}
         </List>
       </Content>
       <View style={styles.footer}>
@@ -188,7 +147,13 @@ const MyProducts = ({navigation}) => {
   );
 };
 
-export default MyProducts;
+const mapStateToProps = (state) => {
+  return {
+    id: state.auth.id,
+  };
+};
+
+export default connect(mapStateToProps)(MyProducts);
 
 const styles = StyleSheet.create({
   footerWrapper: {
