@@ -5,10 +5,10 @@ import {logout} from '../public/redux/action/authAction';
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Right, List, ListItem, Text, Left} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import {API_URL_DEVELOPMENT} from '@env';
-
 import john from '../assets/john-lennon.jpg';
 
 const Profile = ({
@@ -21,12 +21,12 @@ const Profile = ({
   name,
   email,
 }) => {
-  console.log('Is login?', isLogin);
-  console.log('Here token', token);
-  console.log('your level', level);
-  console.log('your user id', id);
-  console.log('Your name', name);
-  console.log('Your email', email);
+  // console.log('Is login?', isLogin);
+  // console.log('Here token', token);
+  // console.log('your level', level);
+  // console.log('your user id', id);
+  // console.log('Your name', name);
+  // console.log('Your email', email);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -103,19 +103,21 @@ const Profile = ({
               </Right>
             </ListItem>
           )}
-          <ListItem onPress={() => navigation.navigate('Shipping')}>
-            <Left>
-              <View>
-                <Text style={styles.headline}>Shipping addresses</Text>
-                <Text style={{fontSize: 16, color: 'gray', marginRight: 155}}>
-                  2 addresses
-                </Text>
-              </View>
-            </Left>
-            <Right>
-              <Icon name="chevron-right" />
-            </Right>
-          </ListItem>
+          {level === 'seller' ? null : (
+            <ListItem onPress={() => navigation.navigate('Shipping')}>
+              <Left>
+                <View>
+                  <Text style={styles.headline}>Shipping addresses</Text>
+                  <Text style={{fontSize: 16, color: 'gray', marginRight: 155}}>
+                    2 addresses
+                  </Text>
+                </View>
+              </Left>
+              <Right>
+                <Icon name="chevron-right" />
+              </Right>
+            </ListItem>
+          )}
           <ListItem onPress={() => navigation.navigate('Setup')}>
             <Left>
               <View>
