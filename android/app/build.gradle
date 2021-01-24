@@ -139,6 +139,7 @@ android {
         versionCode 1
         targetSdkVersion 29
         versionName "1.0"
+        multiDexEnabled true
     }
     splits {
         abi {
