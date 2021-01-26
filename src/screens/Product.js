@@ -4,7 +4,7 @@ import {addToCart} from '../public/redux/action/cartAction';
 import axios from 'axios';
 import {View, Text, Alert} from 'react-native';
 import {Spinner} from 'native-base';
-import {API_URL_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
 
 import DetailProduct from '../components/DetailProduct/DetailProduct';
 
@@ -19,7 +19,7 @@ const Product = ({route, navigation, addToCart}) => {
       .get(url)
       .then(({data}) => {
         let splitter = data.image.split(',');
-        setImage(splitter.map((e) => e.replace('localhost', '192.168.8.101')));
+        setImage(splitter.map((e) => e.replace('localhost', IP_DEVELOPMENT)));
         setProduct(data);
       })
       .catch((err) => console.log(err));

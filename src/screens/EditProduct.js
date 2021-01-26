@@ -17,7 +17,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
-import {API_URL_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
 
 const EditProduct = ({route, navigation}) => {
   const [product, setProduct] = useState({});
@@ -34,7 +34,6 @@ const EditProduct = ({route, navigation}) => {
   const [capture, setCapture] = useState({});
   const token = useSelector((state) => state.auth.token);
   const {Itemid} = route.params;
-  console.log(token);
 
   const handleSubmit = async () => {
     const config = {
@@ -93,7 +92,7 @@ const EditProduct = ({route, navigation}) => {
       .get(`${API_URL_DEVELOPMENT}product/${Itemid}`)
       .then(({data}) => {
         let splitter = data.image.split(',');
-        setImage(splitter.map((e) => e.replace('localhost', '192.168.8.101')));
+        setImage(splitter.map((e) => e.replace('localhost', IP_DEVELOPMENT)));
         setProduct(data);
       })
       .catch((err) => console.log(err));

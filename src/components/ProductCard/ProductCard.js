@@ -24,7 +24,7 @@ const ProductCard = ({imgUrl, brand, name, price, navigation, id}) => {
         <Image source={rating} />
         <Text style={styles.textBrand}>{brand}</Text>
         <Text style={styles.textProduct}>{name}</Text>
-        <Text style={styles.textPrice}>Rp. {price.toLocaleString()}</Text>
+        <Text style={styles.textPrice}>Rp. {price}</Text>
       </View>
     </View>
   );

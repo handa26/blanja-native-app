@@ -4,7 +4,7 @@ import {View, StyleSheet, ScrollView} from 'react-native';
 import {Spinner} from 'native-base';
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import ProductCard from '../components/ProductCard/ProductCard';
-import {API_URL_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
 
 const Catalog = ({navigation, route}) => {
   const {categoryName, title} = route.params;
@@ -39,7 +39,7 @@ const Catalog = ({navigation, route}) => {
               <ProductCard
                 navigation={navigation}
                 key={product.id}
-                imgUrl={img[0].replace('localhost', '192.168.8.101')}
+                imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
                 name={product.product_name}
                 brand={product.product_brand}
                 price={product.product_price}

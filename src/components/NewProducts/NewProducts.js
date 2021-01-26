@@ -4,7 +4,7 @@ import {View, ScrollView, StyleSheet} from 'react-native';
 import {Spinner} from 'native-base';
 import ProductCard from '../ProductCard/ProductCard';
 import CustomHeader from '../CustomHeader/CustomHeader';
-import {API_URL_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
 
 const NewProducts = ({navigation}) => {
   const [products, setProducts] = useState({});
@@ -38,7 +38,7 @@ const NewProducts = ({navigation}) => {
               <ProductCard
                 navigation={navigation}
                 key={product.id}
-                imgUrl={img[0].replace('localhost', '192.168.8.101')}
+                imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
                 name={product.product_name}
                 brand={product.product_brand}
                 price={product.product_price}

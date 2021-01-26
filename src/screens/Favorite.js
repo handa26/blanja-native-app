@@ -5,7 +5,7 @@ import {Spinner} from 'native-base';
 import ProductCard from '../components/ProductCard/ProductCard';
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import bags from '../assets/icons/bags.png';
-import {API_URL_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
 
 const Favorite = ({navigation}) => {
   const [productsPopular, setProductsPopular] = useState({});
@@ -52,7 +52,7 @@ const Favorite = ({navigation}) => {
               <ProductCard
                 navigation={navigation}
                 key={product.id}
-                imgUrl={img[0].replace('localhost', '192.168.8.101')}
+                imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
                 name={product.product_name}
                 brand={product.product_brand}
                 price={product.product_price}

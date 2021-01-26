@@ -49,7 +49,7 @@ const Home = ({navigation}) => {
                 <ProductCard
                   navigation={navigation}
                   key={product.id}
-                  imgUrl={img[0].replace('localhost', '192.168.8.101')}
+                  imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}
@@ -76,7 +76,7 @@ const Home = ({navigation}) => {
               return (
                 <ProductCard
                   key={product.id}
-                  imgUrl={img[0].replace('localhost', '192.168.8.101')}
+                  imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}

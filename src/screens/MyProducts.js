@@ -20,7 +20,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 import HeadlineText from '../components/HeadlineText/HeadlineText';
-import {API_URL_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
 
 const MyProducts = ({navigation, id}) => {
   const [products, setProducts] = useState();
@@ -90,7 +90,7 @@ const MyProducts = ({navigation, id}) => {
                     <Thumbnail
                       square
                       source={{
-                        uri: img[0].replace('localhost', '192.168.8.101'),
+                        uri: img[0].replace('localhost', IP_DEVELOPMENT),
                       }}
                     />
                   </Left>
