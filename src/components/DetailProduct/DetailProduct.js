@@ -3,7 +3,7 @@ import axios from 'axios';
 import {ScrollView, View, Text, Image, StyleSheet} from 'react-native';
 import {Left, Button, Right, List, ListItem, H2} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {API_URL_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
 
 import rating from '../../assets/icons/rating-full.png';
 import ProductCard from '../ProductCard/ProductCard';
@@ -58,6 +58,17 @@ const DetailProduct = ({
           </Button>
         </View>
         <List style={{marginRight: 15, marginTop: 20}}>
+          <ListItem
+            onPress={() => navigation.navigate('Chat', {productName: name})}>
+            <Left>
+              <View>
+                <Text style={{fontSize: 20, fontWeight: 'bold'}}>Chat</Text>
+              </View>
+            </Left>
+            <Right>
+              <Icon name="chevron-right" />
+            </Right>
+          </ListItem>
           <ListItem>
             <Left>
               <View>
@@ -93,7 +104,7 @@ const DetailProduct = ({
                 <ProductCard
                   navigation={navigation}
                   key={product.id}
-                  imgUrl={img[0].replace('localhost', '192.168.8.101')}
+                  imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}

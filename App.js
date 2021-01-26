@@ -33,6 +33,7 @@ import Shipping from './src/components/Shipping/Shipping';
 import Setup from './src/components/Setup/Setup';
 import NewProducts from './src/components/NewProducts/NewProducts';
 import PopularProducts from './src/components/PopularProducts/PopularProducts';
+import Chat from './src/screens/Chat';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -133,6 +134,7 @@ const appRouter = () => {
                 name="PopularProducts"
                 component={PopularProducts}
               />
+              <Stack.Screen name="Chat" component={Chat} />
             </Stack.Navigator>
           </PersistGate>
         </Provider>
