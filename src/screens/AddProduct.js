@@ -9,6 +9,7 @@ import {
   Platform,
   Image,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -32,6 +33,16 @@ const AddProduct = ({navigation}) => {
   const [capture, setCapture] = useState({});
   const token = useSelector((state) => state.auth.token);
   const userId = useSelector((state) => state.auth.id);
+
+  const showToastWithGravityAndOffset = () => {
+    ToastAndroid.showWithGravityAndOffset(
+      'The product successfully added',
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50,
+    );
+  };
 
   const handleSubmit = async () => {
     const config = {
@@ -76,12 +87,7 @@ const AddProduct = ({navigation}) => {
       .post(`${API_URL_DEVELOPMENT}product`, data, config)
       .then((res) => {
         console.log(res);
-        Alert.alert(
-          `Success`,
-          'Successfully added product',
-          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-          {cancelable: false},
-        );
+        console.log('Test');
       })
       .catch((err) => console.log(err));
   };
@@ -239,6 +245,7 @@ const AddProduct = ({navigation}) => {
           style={styles.button}
           onPress={() => {
             handleSubmit();
+            showToastWithGravityAndOffset();
             navigation.navigate('Home');
           }}>
           <Text style={styles.buttonText}>Add Now</Text>

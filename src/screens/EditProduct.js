@@ -8,7 +8,7 @@ import {
   TextInput,
   Image,
   Platform,
-  Alert,
+  ToastAndroid,
 } from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -34,6 +34,16 @@ const EditProduct = ({route, navigation}) => {
   const [capture, setCapture] = useState({});
   const token = useSelector((state) => state.auth.token);
   const {Itemid} = route.params;
+
+  const showToastWithGravityAndOffset = () => {
+    ToastAndroid.showWithGravityAndOffset(
+      'The product successfully updated',
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50,
+    );
+  };
 
   const handleSubmit = async () => {
     const config = {
@@ -77,12 +87,7 @@ const EditProduct = ({route, navigation}) => {
       .patch(`${API_URL_DEVELOPMENT}product/${Itemid}`, data, config)
       .then((res) => {
         console.log(res);
-        Alert.alert(
-          `Success`,
-          'Successfully updated product',
-          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-          {cancelable: false},
-        );
+        console.log('update');
       })
       .catch((err) => console.log(err));
   };
@@ -92,6 +97,7 @@ const EditProduct = ({route, navigation}) => {
       .get(`${API_URL_DEVELOPMENT}product/${Itemid}`)
       .then(({data}) => {
         let splitter = data.image.split(',');
+        console.log('test');
         setImage(splitter.map((e) => e.replace('localhost', IP_DEVELOPMENT)));
         setProduct(data);
       })
@@ -219,15 +225,6 @@ const EditProduct = ({route, navigation}) => {
           />
           <Text style={styles.text}>Product Size</Text>
         </View>
-        {/* <View style={styles.formBox}>
-          <TextInput
-            onChangeText={(val) => setRating(val)}
-            defaultValue={rating}
-            style={styles.inputBox}
-            keyboardType="numeric"
-          />
-          <Text style={styles.text}>Product rating</Text>
-        </View> */}
         <View style={styles.formBox}>
           <Text>Product category</Text>
           <Picker
@@ -260,7 +257,8 @@ const EditProduct = ({route, navigation}) => {
           style={styles.button}
           onPress={() => {
             handleSubmit();
-            navigation.navigate('MyProducts');
+            showToastWithGravityAndOffset();
+            navigation.navigate('Home');
           }}>
           <Text style={styles.buttonText}>Update Now</Text>
         </Button>
