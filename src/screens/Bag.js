@@ -7,12 +7,13 @@ import {
   minQty,
   clearCart,
 } from '../public/redux/action/cartAction';
-import {View, StyleSheet, ScrollView, Alert} from 'react-native';
-import {Button, Text} from 'native-base';
+import {View, StyleSheet, Image, Alert} from 'react-native';
+import {Button, Text, Content, Container} from 'native-base';
 
 import HeadlineText from '../components/HeadlineText/HeadlineText';
 import ProductBag from '../components/ProductBag/ProductBag';
 import CustomHeader from '../components/CustomHeader/CustomHeader';
+import Bags from '../assets/icons/bags.png';
 
 const Bag = ({navigation, cart, removeFromCart, pickCart, plusQty, minQty}) => {
   const pick = useSelector((state) => state.cart.cart);
@@ -37,10 +38,9 @@ const Bag = ({navigation, cart, removeFromCart, pickCart, plusQty, minQty}) => {
     setTotalItems(items);
     setTotalPrice(price);
   }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
-  console.log('price here ' + totalPrice.toLocaleString('id-ID'));
-  console.log('item here' + totalItems);
+  console.log(cart.length);
   return (
-    <ScrollView>
+    <Container>
       <CustomHeader
         rightIcon="search"
         rightIconRoute={() => navigation.navigate('Search')}
@@ -48,47 +48,76 @@ const Bag = ({navigation, cart, removeFromCart, pickCart, plusQty, minQty}) => {
         leftIcon="arrow-left"
       />
       <HeadlineText condition="My Bag" />
-      {cart.map((item) => {
-        return (
-          <ProductBag
-            key={item.id}
-            productName={item.productName}
-            imgUrl={item.image}
-            price={item.price}
-            remove={() => removeFromCart(item.id)}
-            picked={() => pickCart(item.id)}
-            min={() => minQty(item.id)}
-            plus={() => plusQty(item.id)}
-            status={item.pick}
-            qty={item.qty}
-          />
-        );
-      })}
-      {/* <ProductBag />
-      <ProductBag /> */}
-      <View style={styles.checkout}>
-        <View style={styles.total}>
-          <Text>Total amount: </Text>
-          <Text>{`Rp ${totalPrice.toFixed(2)}`}</Text>
+      <Content style={{marginBottom: 100}}>
+        {cart.length === 0 ? (
+          <View style={{height: 450}}>
+            <Image source={Bags} style={styles.image} />
+            <View style={{left: 55, top: 100}}>
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontWeight: 'bold',
+                  color: '#DB3022',
+                  marginLeft: 110,
+                }}>
+                Empty?
+              </Text>
+              <Button
+                rounded
+                onPress={() => navigation.navigate('Home')}
+                style={{
+                  marginLeft: 100,
+                  marginTop: 10,
+                  backgroundColor: '#DB3022',
+                }}>
+                <Text>Shopping</Text>
+              </Button>
+            </View>
+          </View>
+        ) : (
+          cart.map((item) => {
+            return (
+              <ProductBag
+                key={item.id}
+                productName={item.productName}
+                imgUrl={item.image}
+                price={item.price}
+                remove={() => removeFromCart(item.id)}
+                picked={() => pickCart(item.id)}
+                min={() => minQty(item.id)}
+                plus={() => plusQty(item.id)}
+                status={item.pick}
+                qty={item.qty}
+              />
+            );
+          })
+        )}
+      </Content>
+      {cart.length === 0 ? null : (
+        <View style={styles.footer}>
+          <View style={styles.total}>
+            <Text>Total amount: </Text>
+            <Text>{`Rp ${totalPrice.toFixed(2)}`}</Text>
+          </View>
+          <Button
+            style={styles.button}
+            onPress={() => {
+              if (totalItems == 0) {
+                return Alert.alert(
+                  `Bag`,
+                  'Pick Your Product',
+                  [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+                  {cancelable: true},
+                );
+              }
+              clearCart();
+              navigation.navigate('Checkout', {totalPrice, totalItems});
+            }}>
+            <Text style={styles.buttonText}>Checkout</Text>
+          </Button>
         </View>
-        <Button
-          style={styles.button}
-          onPress={() => {
-            if (totalItems == 0) {
-              return Alert.alert(
-                `Bag`,
-                'Pick Your Product',
-                [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-                {cancelable: true},
-              );
-            }
-            clearCart();
-            navigation.navigate('Checkout', {totalPrice, totalItems});
-          }}>
-          <Text style={styles.buttonText}>Checkout</Text>
-        </Button>
-      </View>
-    </ScrollView>
+      )}
+    </Container>
   );
 };
 
@@ -119,6 +148,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#DB3022',
     borderRadius: 50,
   },
+  image: {
+    left: 100,
+    top: 70,
+  },
   buttonText: {
     position: 'absolute',
     left: 135,
@@ -132,5 +165,13 @@ const styles = StyleSheet.create({
   checkout: {
     marginBottom: 30,
     marginTop: 20,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 0,
+    paddingVertical: 15,
+    backgroundColor: 'white',
+    right: 16,
+    alignSelf: 'center',
   },
 });
