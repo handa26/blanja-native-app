@@ -1,11 +1,28 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import {useSelector} from 'react-redux';
 import {ScrollView, View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Item, Input} from 'native-base';
+import {Button, Item, Input, Spinner} from 'native-base';
+
 import CustomHeader from '../CustomHeader/CustomHeader';
 import ShippingCard from '../ShippingCard/ShippingCard';
+import {API_URL_DEVELOPMENT} from '@env';
 
 const Shipping = ({navigation}) => {
+  const userId = useSelector((state) => state.auth.id);
+  const [address, setAddress] = useState();
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL_DEVELOPMENT}address/${userId}`)
+      .then(({data}) => {
+        console.log(data.data);
+        setAddress(data.data);
+      })
+      .catch((err) => console.log(err));
+  }, [userId]);
+
   return (
     <ScrollView>
       <CustomHeader
@@ -19,8 +36,28 @@ const Shipping = ({navigation}) => {
           <Input placeholder="Search" />
         </Item>
         <Text style={styles.headlineText}>Shipping address</Text>
-        <ShippingCard />
-        <Button bordered style={styles.button}>
+        {address ? (
+          address &&
+          address.map((data) => {
+            return (
+              <ShippingCard
+                key={data.id}
+                street={data.street}
+                name={data.name}
+                postalCodes={data.postal_codes}
+                province={data.province}
+                city={data.city}
+              />
+            );
+          })
+        ) : (
+          <Spinner />
+        )}
+        {/* <ShippingCard /> */}
+        <Button
+          bordered
+          style={styles.button}
+          onPress={() => navigation.navigate('Address')}>
           <Text style={{marginLeft: 133, color: 'black'}}>ADD NEW ADDRESS</Text>
         </Button>
       </View>

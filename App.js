@@ -34,10 +34,14 @@ import Setup from './src/components/Setup/Setup';
 import NewProducts from './src/components/NewProducts/NewProducts';
 import PopularProducts from './src/components/PopularProducts/PopularProducts';
 import Chat from './src/screens/Chat';
+import Address from './src/screens/Address';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const persistedStore = persistStore(store);
+
+import {useSelector} from 'react-redux';
+import {SocketProvider} from './src/public/context/SocketProvider';
 
 function MyTabs() {
   return (
@@ -100,46 +104,40 @@ function MyTabs() {
   );
 }
 
-const appRouter = () => {
+const appRouter = ({navigation}) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     SplashScreen.hide();
   }, []);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const id = useSelector((state) => state.auth.id);
 
   return (
-    <>
-      <NavigationContainer>
-        <Provider store={store}>
-          <PersistGate persistor={persistedStore} loading={null}>
-            <Stack.Navigator headerMode="none">
-              <Stack.Screen name="Tab" component={MyTabs} />
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Signup" component={SignUp} />
-              <Stack.Screen name="Forgot" component={Forgot} />
-              <Stack.Screen name="Reset" component={Reset} />
-              <Stack.Screen name="Detail" component={Product} />
-              <Stack.Screen name="Catalog" component={Catalog} />
-              <Stack.Screen name="Notification" component={Notification} />
-              <Stack.Screen name="Search" component={Search} />
-              <Stack.Screen name="Order" component={MyOrder} />
-              <Stack.Screen name="Shipping" component={Shipping} />
-              <Stack.Screen name="Checkout" component={Checkout} />
-              <Stack.Screen name="Success" component={Success} />
-              <Stack.Screen name="AddProduct" component={AddProduct} />
-              <Stack.Screen name="MyProducts" component={MyProducts} />
-              <Stack.Screen name="EditProduct" component={EditProduct} />
-              <Stack.Screen name="Setup" component={Setup} />
-              <Stack.Screen name="NewProducts" component={NewProducts} />
-              <Stack.Screen
-                name="PopularProducts"
-                component={PopularProducts}
-              />
-              <Stack.Screen name="Chat" component={Chat} />
-            </Stack.Navigator>
-          </PersistGate>
-        </Provider>
-      </NavigationContainer>
-    </>
+    <SocketProvider id={id}>
+      <Stack.Navigator headerMode="none">
+        <Stack.Screen name="Tab" component={MyTabs} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Signup" component={SignUp} />
+        <Stack.Screen name="Forgot" component={Forgot} />
+        <Stack.Screen name="Reset" component={Reset} />
+        <Stack.Screen name="Detail" component={Product} />
+        <Stack.Screen name="Catalog" component={Catalog} />
+        <Stack.Screen name="Notification" component={Notification} />
+        <Stack.Screen name="Search" component={Search} />
+        <Stack.Screen name="Order" component={MyOrder} />
+        <Stack.Screen name="Shipping" component={Shipping} />
+        <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="Success" component={Success} />
+        <Stack.Screen name="AddProduct" component={AddProduct} />
+        <Stack.Screen name="MyProducts" component={MyProducts} />
+        <Stack.Screen name="EditProduct" component={EditProduct} />
+        <Stack.Screen name="Setup" component={Setup} />
+        <Stack.Screen name="NewProducts" component={NewProducts} />
+        <Stack.Screen name="PopularProducts" component={PopularProducts} />
+        <Stack.Screen name="Chat" component={Chat} />
+        <Stack.Screen name="Address" component={Address} />
+      </Stack.Navigator>
+    </SocketProvider>
   );
 };
 
