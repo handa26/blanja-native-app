@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     height: 64,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#f1f1f1',
+    borderColor: 'black',
+    padding: 10,
   },
   button: {
     position: 'relative',
@@ -49,10 +50,19 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     backgroundColor: '#DB3022',
     borderRadius: 50,
+    marginBottom: 20,
   },
   buttonText: {
     position: 'absolute',
     left: 153,
+  },
+  errorMsg: {
+    marginBottom: 10,
+    color: 'red',
+    paddingRight: 10,
+    fontSize: 15,
+    marginTop: 10,
+    textAlign: 'center',
   },
 });
 
