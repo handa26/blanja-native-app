@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import {logout} from '../public/redux/action/authAction';
-import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native';
 import {Right, List, ListItem, Text, Left} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -43,15 +43,34 @@ const Profile = ({
 
   const logOut = async () => {
     try {
-      console.log('Token acquired', token);
-      const data = '';
-      await axios.post(`${API_URL_DEVELOPMENT}auth/logout`, data, {
-        headers: {
-          'x-access-token': 'Bearer ' + token,
-        },
-      });
-      logoutRedux();
-      navigation.navigate('Login');
+      Alert.alert(
+        'Logout',
+        'Are you leaving?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {
+              return console.log('Cancel Pressed');
+            },
+            style: 'cancel',
+          },
+          {
+            text: 'Ok',
+            onPress: async () => {
+              const data = '';
+              await axios.post(`${API_URL_DEVELOPMENT}auth/logout`, data, {
+                headers: {
+                  'x-access-token': 'Bearer ' + token,
+                },
+              });
+              console.log('test');
+              logoutRedux();
+              navigation.navigate('Signup');
+            },
+          },
+        ],
+        {cancelable: true},
+      );
     } catch (error) {
       console.log(error);
     }
