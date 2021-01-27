@@ -3,7 +3,7 @@ import {View, Text} from 'react-native';
 
 import styles from './styles';
 
-const OrderCard = ({order, trackNum, qty, total}) => {
+const OrderCard = ({order, trackNum, qty, total, payment}) => {
   return (
     <View>
       <View style={styles.cardWrapper}>
@@ -14,6 +14,7 @@ const OrderCard = ({order, trackNum, qty, total}) => {
           </View>
           <Text style={{color: 'gray'}}>Tracking number: {trackNum}</Text>
           <Text style={{color: 'gray'}}>Quantity: {qty}</Text>
+          <Text style={{color: 'gray'}}>Payment methods: {payment}</Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={{color: 'gray'}}>Total Amount: Rp. {total}</Text>
             <Text style={{color: 'green'}}>Delivered</Text>

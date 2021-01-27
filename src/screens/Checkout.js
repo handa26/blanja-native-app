@@ -1,7 +1,13 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
-import {View, ScrollView, StyleSheet, Alert} from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  ToastAndroid,
+  TouchableOpacity,
+} from 'react-native';
 import {Button, Text} from 'native-base';
 import PushNotification from 'react-native-push-notification';
 import {showNotification} from '../notif';
@@ -15,6 +21,18 @@ const channel = 'notif';
 
 const Checkout = ({navigation, id, route}) => {
   const {totalPrice, totalItems} = route.params;
+  const [payment, setPayment] = useState('');
+  const [error, setError] = useState('');
+
+  const showToastWithGravityAndOffset = () => {
+    ToastAndroid.showWithGravityAndOffset(
+      'Checkout success!',
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50,
+    );
+  };
 
   //pushnotif
   useEffect(() => {
@@ -39,26 +57,27 @@ const Checkout = ({navigation, id, route}) => {
   }, []);
 
   const postTransaction = async () => {
-    const user_id = id;
-    const data = {
-      user_id: user_id,
-      qty: totalItems,
-      price: totalPrice,
-    };
+    if (payment === '') {
+      setError('Please select your payments method.');
+    } else {
+      const user_id = id;
+      const data = {
+        user_id: user_id,
+        qty: totalItems,
+        price: totalPrice,
+        payment: payment,
+      };
 
-    axios
-      .post(`${API_URL_DEVELOPMENT}history`, data)
-      .then((res) => {
-        console.log('Inside history endpoint', res);
-        Alert.alert(
-          `Checkout succeed`,
-          "C'mon shopping again!",
-          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-          {cancelable: false},
-        );
-      })
-      .catch((err) => console.log(err));
+      axios
+        .post(`${API_URL_DEVELOPMENT}history`, data)
+        .then((res) => {
+          console.log('Inside history endpoint', res);
+          console.log('checkout');
+        })
+        .catch((err) => console.log(err));
+    }
   };
+  console.log(payment);
   return (
     <ScrollView>
       <CustomHeader
@@ -73,10 +92,31 @@ const Checkout = ({navigation, id, route}) => {
         </View>
         <View>
           <Text style={styles.headlineText}>Payment</Text>
-          <CheckboxPayments image="Mastercard" />
-          <CheckboxPayments image="Paypal" />
-          <CheckboxPayments image="Stripe" />
-          <CheckboxPayments image="GoogleWallet" />
+          <Text>{error}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setPayment('mastercard');
+            }}>
+            <CheckboxPayments image="Mastercard" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setPayment('paypal');
+            }}>
+            <CheckboxPayments image="Paypal" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setPayment('stripe');
+            }}>
+            <CheckboxPayments image="Stripe" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setPayment('google');
+            }}>
+            <CheckboxPayments image="GoogleWallet" />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.bottomNav}>
@@ -88,7 +128,9 @@ const Checkout = ({navigation, id, route}) => {
           style={styles.button}
           onPress={() => {
             postTransaction();
+            showToastWithGravityAndOffset();
             showNotification('Notification', 'Checkout success', channel);
+            setPayment('');
             navigation.navigate('Success');
           }}>
           <Text style={styles.buttonText}>Submit Order</Text>

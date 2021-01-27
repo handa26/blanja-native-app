@@ -18,7 +18,8 @@ const MyOrder = ({navigation}) => {
       .get(`${API_URL_DEVELOPMENT}history/${userId}`)
       .then(({data}) => {
         setOrders(data.data);
-        // console.log(data);
+        console.log('payment');
+        console.log(data);
       })
       .catch((err) => console.log(err));
   }, [userId]);
@@ -43,6 +44,7 @@ const MyOrder = ({navigation}) => {
                 trackNum={order.invoice_id}
                 qty={order.qty}
                 total={order.price}
+                payment={order.payment}
               />
             );
           })}
