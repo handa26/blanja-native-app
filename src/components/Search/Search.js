@@ -29,6 +29,7 @@ const Search = ({navigation}) => {
       )
       .then(({data}) => {
         console.log('Search result', data.products);
+        console.log('test');
         setProducts(data);
       })
       .catch((err) => console.log(err));
@@ -41,7 +42,7 @@ const Search = ({navigation}) => {
 
   return (
     <ScrollView>
-      <Header style={styles.header} searchBar rounded>
+      <Header style={styles.header} searchBar rounded noShadow>
         <Left>
           <Button transparent>
             <Icon
@@ -63,14 +64,23 @@ const Search = ({navigation}) => {
           <Text>Search</Text>
         </Button>
       </Header>
+      <View style={styles.sortIcon}>
+        <Button
+          iconLeft
+          style={styles.sortBtn}
+          onPress={() => {
+            actionSheetRef.current?.setModalVisible();
+          }}>
+          <Icon
+            style={{marginLeft: 20}}
+            name="arrows-v"
+            size={20}
+            color="black"
+          />
+          <Text style={{color: 'black'}}>Sort</Text>
+        </Button>
+      </View>
       <HeadlineText condition="Popular search" />
-      <TouchableOpacity
-        onPress={() => {
-          actionSheetRef.current?.setModalVisible();
-        }}>
-        <Text>Open ActionSheet</Text>
-      </TouchableOpacity>
-
       <ActionSheet ref={actionSheetRef} animated gestureEnabled>
         <View>
           {/* <View style={styles.borderLine} /> */}
@@ -141,14 +151,14 @@ export default Search;
 const styles = StyleSheet.create({
   header: {
     backgroundColor: 'white',
-    paddingVertical: 35,
-    marginTop: 20,
+    paddingBottom: 85,
+    marginTop: 60,
   },
   input: {
     backgroundColor: '#f1f1f1',
     // marginRight: -25,
     borderRadius: 20,
-    right: 60,
+    right: 20,
   },
   productsWrapper: {
     flexDirection: 'row',
@@ -181,5 +191,16 @@ const styles = StyleSheet.create({
   txtSheet: {
     fontSize: 16,
     color: 'black',
+  },
+  sortIcon: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    right: 35,
+    top: 90,
+  },
+  sortBtn: {
+    backgroundColor: '#F1F1F1',
+    height: 30,
+    width: 130,
   },
 });
