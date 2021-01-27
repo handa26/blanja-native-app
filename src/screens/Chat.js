@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import {useSelector} from 'react-redux';
 import {View, StyleSheet, TextInput, ScrollView} from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
@@ -7,12 +7,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CustomHeader from '../components/CustomHeader/CustomHeader';
 
-const socket = io('http://192.168.8.100:3000');
+import {useSocket} from '../public/context/SocketProvider';
+// const socket = io('http://192.168.8.100:3000');
 
 const Chat = ({navigation, route}) => {
+  const socket = useSocket();
   const [state, setState] = useState('');
   const [chat, setChat] = useState([]);
   const user_name = useSelector((state) => state.auth.name);
+  const id = useSelector((state) => state.auth.id);
 
   useEffect(() => {
     socket.on('message', (msg) => {
@@ -21,11 +24,13 @@ const Chat = ({navigation, route}) => {
     return () => {
       socket.off('message');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const submitChatMessage = () => {
     // Prevent firing empty message
     if (state.length !== 0) {
+      // socket.emit('message', {state, sender: id}, 21);
       socket.emit('message', {state, user_name});
       setState('');
     }
