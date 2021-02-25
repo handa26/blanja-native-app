@@ -34,9 +34,9 @@ const Chat = ({navigation, route}) => {
   useEffect(() => {
     getName();
     getNewMessage();
-  }, [getName]);
+  }, []);
 
-  useSocket(() => {
+  useEffect(() => {
     socket.on('refresh', (someEvent) => {
       console.log(`Refresh to ${number}`);
       getNewMessage();
@@ -96,7 +96,6 @@ const Chat = ({navigation, route}) => {
       .catch((err) => console.log(err.response.data.details));
   };
 
-  console.log(chat);
   return (
     <Container>
       <CustomHeader
@@ -112,32 +111,35 @@ const Chat = ({navigation, route}) => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({item}) =>
             item.sender_id === sender ? (
-              <View style={styles.chatWrapper}>
-                <View />
-                <View style={styles.chatBubbleWrapper}>
-                  <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
-                    <Text style={styles.chatSender}>You</Text>
-                    <Text>{item.message}</Text>
+              <View style={styles.wrapper}>
+                <View style={styles.chatWrapper}>
+                  <View style={styles.chatBubbleWrapper}>
+                    <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
+                      {/* <Text style={styles.chatSender}>You</Text> */}
+                      <Text>{item.message}</Text>
+                    </View>
                   </View>
-                  {/* <Text style={styles.chatText}>
-                    {item.created_at.toString().split('T')[0]} |{' '}
-                    {item.created_at.toString().split('T')[1].substr(0, 5)}
-                  </Text> */}
                 </View>
+                <Text style={styles.timeStampSender}>
+                  {item.created_at.toString().split('T')[1].substr(0, 5)}
+                </Text>
               </View>
             ) : (
-              <View style={styles.chatWrapper}>
-                <View style={styles.chatBubbleRecieverWrapper}>
-                  <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
-                    <Text style={styles.chatReceiver}>{item.sender_name}</Text>
-                    <Text>{item.message}</Text>
-                    {/* <Text style={styles.chatText}>
-                      {item.created_at.toString().split('T')[0]} |{' '}
-                      {item.created_at.toString().split('T')[1].substr(0, 5)}
-                    </Text> */}
+              <View style={styles.wrapper}>
+                <Text style={styles.chatReceiver}>{item.sender_name}</Text>
+                <View style={styles.chatWrapper}>
+                  <View />
+                  <View style={styles.chatBubbleRecieverWrapper}>
+                    <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
+                      <Text style={styles.msgContentReceiver}>
+                        {item.message}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-                <View />
+                <Text style={styles.timeStampReceiver}>
+                  {item.created_at.toString().split('T')[1].substr(0, 5)}
+                </Text>
               </View>
             )
           }
@@ -148,6 +150,7 @@ const Chat = ({navigation, route}) => {
           <View style={styles.formBox}>
             <TextInput
               style={styles.inputBox}
+              value={message}
               onChangeText={(val) => setMessage(val)}
             />
             <Button style={styles.btn} onPress={() => sendMessage()}>
@@ -200,7 +203,7 @@ const styles = StyleSheet.create({
     width: vw('100%'),
   },
   chatWrapper: {
-    marginVertical: 10,
+    marginVertical: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -208,18 +211,16 @@ const styles = StyleSheet.create({
     borderColor: 'red',
     backgroundColor: 'white',
     borderWidth: 1,
-    minWidth: vw('25%'),
-    maxWidth: vw('60%'),
-    borderRadius: 5,
+    width: 'auto',
+    borderRadius: 20,
     marginHorizontal: vw('1%'),
   },
   chatBubbleRecieverWrapper: {
     borderColor: 'red',
     backgroundColor: '#f1f1f1',
     borderWidth: 1,
-    minWidth: vw('25%'),
-    maxWidth: vw('60%'),
-    borderRadius: 5,
+    width: 'auto',
+    borderRadius: 20,
     marginHorizontal: vw('1%'),
   },
   chatSender: {
@@ -228,14 +229,29 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   chatReceiver: {
-    textAlign: 'left',
+    textAlign: 'right',
     fontWeight: 'bold',
+    marginHorizontal: 10,
     color: 'red',
   },
-  chatText: {
+  timeStampSender: {
     fontSize: 10,
-    marginTop: 8,
+    color: 'gray',
+    textAlign: 'left',
+    marginHorizontal: 10,
+  },
+  timeStampReceiver: {
+    fontSize: 10,
     color: 'gray',
     textAlign: 'right',
+    marginHorizontal: 10,
+  },
+  msgContentReceiver: {
+    textAlign: 'right',
+  },
+  wrapper: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    marginBottom: 10,
   },
 });
