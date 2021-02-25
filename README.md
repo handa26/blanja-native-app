@@ -40,8 +40,8 @@ npm run start
 ## Screenshots
 
 <div align="center">
-  <img width="500px" src="./src/assets/images/sign-up.png">
-  <img width="500px" src="./src/assets/images/home.png">
+  <img width="500px" height="300px" src="./src/assets/images/sign-up.png">
+  <img width="500px" height="300px" src="./src/assets/images/home.png">
 </div>
 
 
