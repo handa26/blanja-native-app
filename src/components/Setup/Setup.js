@@ -1,12 +1,31 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import {useSelector} from 'react-redux';
 import {View, Text, StyleSheet} from 'react-native';
-import {Form, Item, Input, Label} from 'native-base';
+import {Input} from 'react-native-elements';
+
 import HeadlineText from '../HeadlineText/HeadlineText';
 import CustomHeader from '../CustomHeader/CustomHeader';
+import {API_URL_DEVELOPMENT} from '@env';
 
 const Setup = ({navigation}) => {
-  const [value, setValue] = React.useState('John Lennon');
-  const [date, setDate] = React.useState('12/12/1989');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+
+  const userId = useSelector((state) => state.auth.id);
+  const url = API_URL_DEVELOPMENT;
+
+  useEffect(() => {
+    axios
+      .get(url + `/user/${userId}`)
+      .then(({data}) => {
+        setName(data);
+        setEmail(data);
+      })
+      .catch((err) => console.log(err.response));
+  }, [url, userId]);
+
   return (
     <View>
       <CustomHeader
@@ -17,25 +36,27 @@ const Setup = ({navigation}) => {
       />
       <HeadlineText condition="Settings" />
       <View>
-        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20}}>
+        <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
           Personal Information
         </Text>
         <View>
-          <Form>
-            <Item style={styles.input} stackedLabel>
-              <Label style={styles.label}>Full name</Label>
-              <Input value={value} onChangeText={(val) => setValue(val)} />
-            </Item>
-            <Item style={styles.input} stackedLabel>
-              <Label style={styles.label}>Date of Birth</Label>
-              <Input value={date} onChangeText={(val) => setDate(val)} />
-            </Item>
-          </Form>
+          <Input
+            inputContainerStyle={styles.input}
+            label="Name"
+            defaultValue={name.name}
+            onChangeText={(val) => setName(val)}
+          />
+          <Input
+            inputContainerStyle={styles.input}
+            defaultValue={email.email}
+            label="Email"
+            onChangeText={(val) => setEmail(val)}
+          />
         </View>
       </View>
-      <View style={{marginTop: 60}}>
+      <View style={{marginTop: 40}}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 20}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
             Password
           </Text>
           <Text
@@ -49,16 +70,11 @@ const Setup = ({navigation}) => {
           </Text>
         </View>
         <View>
-          <Form>
-            <Item style={styles.input} stackedLabel>
-              <Label style={styles.label}>Password</Label>
-              <Input
-                secureTextEntry
-                value={value}
-                onChangeText={(val) => setValue(val)}
-              />
-            </Item>
-          </Form>
+          <Input
+            inputContainerStyle={styles.input}
+            secureTextEntry={true}
+            onChangeText={(val) => setPass(val)}
+          />
         </View>
       </View>
     </View>
@@ -77,5 +93,7 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: 'white',
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'orangered',
   },
 });

@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {logout} from '../../public/redux/action/authAction';
 import {View, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native';
 import {Right, List, ListItem, Text, Left} from 'native-base';
@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import HeadlineText from '../../components/HeadlineText/HeadlineText';
 import CustomHeader from '../../components/CustomHeader/CustomHeader';
 import {API_URL_DEVELOPMENT} from '@env';
-import john from '../../assets/john-lennon.jpg';
+import john from '../../assets/images/login-user.png';
 
 const Profile = ({
   navigation,
@@ -21,6 +21,11 @@ const Profile = ({
   name,
   email,
 }) => {
+  const [orders, setOrders] = useState([]);
+  const [address, setAddress] = useState();
+
+  const userId = useSelector((state) => state.auth.id);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       if (!isLogin) {
@@ -68,6 +73,25 @@ const Profile = ({
     }
   };
 
+  useEffect(() => {
+    axios
+      .get(`${API_URL_DEVELOPMENT}/history/${userId}`)
+      .then(({data}) => {
+        setOrders(data.data.length);
+        console.log(data.data.length);
+      })
+      .catch((err) => console.log(err));
+  }, [userId]);
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL_DEVELOPMENT}/address/${userId}`)
+      .then(({data}) => {
+        setAddress(data.data.length);
+      })
+      .catch((err) => console.log(err));
+  }, [userId]);
+
   return (
     <View>
       <CustomHeader
@@ -106,7 +130,10 @@ const Profile = ({
               <Left>
                 <View>
                   <Text style={styles.headline}>My orders</Text>
-                  <Text style={styles.textDetail}>Already have 5 orders</Text>
+                  <Text
+                    style={
+                      styles.textDetail
+                    }>{`Already have ${orders} orders`}</Text>
                 </View>
               </Left>
               <Right>
@@ -120,7 +147,7 @@ const Profile = ({
                 <View>
                   <Text style={styles.headline}>Shipping addresses</Text>
                   <Text style={{fontSize: 16, color: 'gray', marginRight: 155}}>
-                    2 addresses
+                    {`${address} addresses`}
                   </Text>
                 </View>
               </Left>
@@ -133,11 +160,11 @@ const Profile = ({
             <Left>
               <View>
                 <Text
-                  style={{fontSize: 20, fontWeight: 'bold', marginRight: 115}}>
+                  style={{fontSize: 20, fontWeight: 'bold', marginRight: 175}}>
                   Settings
                 </Text>
                 <Text style={{fontSize: 16, color: 'gray', marginRight: 20}}>
-                  Notifications, password
+                  Personal information, password
                 </Text>
               </View>
             </Left>
