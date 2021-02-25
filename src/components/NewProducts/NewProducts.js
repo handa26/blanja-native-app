@@ -42,6 +42,7 @@ const NewProducts = ({navigation, route}) => {
                 brand={product.product_brand}
                 price={product.product_price}
                 id={product.id}
+                badge="New"
               />
             );
           })

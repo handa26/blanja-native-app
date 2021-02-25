@@ -35,6 +35,10 @@ const DetailProduct = ({
       .catch((err) => console.log(err));
   }, [url]);
 
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
   return (
     <ScrollView>
       <CustomHeader
@@ -54,7 +58,7 @@ const DetailProduct = ({
                 marginVertical: 5,
               }}>
               <Text style={styles.text}>{name}</Text>
-              <Text style={styles.textPrice}>Rp. {price}</Text>
+              <Text style={styles.textPrice}>Rp. {toPrice(price)}</Text>
             </View>
             <Text style={styles.textBrand}>{brand}</Text>
             <Image source={rating} />
@@ -125,6 +129,7 @@ const DetailProduct = ({
                   brand={product.product_brand}
                   price={product.product_price}
                   id={product.id}
+                  badge="Fresh"
                 />
               );
             })}

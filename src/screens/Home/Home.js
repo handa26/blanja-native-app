@@ -58,6 +58,7 @@ const Home = ({navigation}) => {
                   brand={product.product_brand}
                   price={product.product_price}
                   id={product.id}
+                  badge="New"
                 />
               );
             })}
@@ -86,6 +87,7 @@ const Home = ({navigation}) => {
                   price={product.product_price}
                   id={product.id}
                   navigation={navigation}
+                  badge="Popular"
                 />
               );
             })}

@@ -40,6 +40,7 @@ const PopularProducts = ({navigation}) => {
                 brand={product.product_brand}
                 price={product.product_price}
                 id={product.id}
+                badge="Popular"
               />
             );
           })
