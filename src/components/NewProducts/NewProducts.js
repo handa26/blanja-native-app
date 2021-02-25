@@ -4,11 +4,11 @@ import {View, ScrollView, StyleSheet} from 'react-native';
 import {Spinner} from 'native-base';
 import ProductCard from '../ProductCard/ProductCard';
 import CustomHeader from '../CustomHeader/CustomHeader';
-import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT} from '@env';
 
-const NewProducts = ({navigation}) => {
+const NewProducts = ({navigation, route}) => {
   const [products, setProducts] = useState({});
-  const url = `${API_URL_DEVELOPMENT}products`;
+  const url = `${API_URL_DEVELOPMENT}/products`;
 
   useEffect(() => {
     axios
@@ -24,7 +24,7 @@ const NewProducts = ({navigation}) => {
       <CustomHeader
         leftIcon="arrow-left"
         leftIconRoute={() => navigation.goBack()}
-        name="New Products"
+        name={route.params ? 'All Products' : 'New Products'}
         rightIcon="search"
         rightIconRoute={() => navigation.navigate('Search')}
       />
@@ -33,12 +33,11 @@ const NewProducts = ({navigation}) => {
           products.products &&
           products.products.map((product) => {
             let img = product.image.split(',');
-            console.log(img[0]);
             return (
               <ProductCard
                 navigation={navigation}
                 key={product.id}
-                imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
+                imgUrl={API_URL_DEVELOPMENT + img[0]}
                 name={product.product_name}
                 brand={product.product_brand}
                 price={product.product_price}

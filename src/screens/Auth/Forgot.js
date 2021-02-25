@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, TextInput} from 'react-native';
-import {Button, Text, Content, Container} from 'native-base';
+import {Text, Content, Container} from 'native-base';
+import {Button, Input} from 'react-native-elements';
+
 import CustomHeader from '../../components/CustomHeader/CustomHeader';
 import HeadlineText from '../../components/HeadlineText/HeadlineText';
 
@@ -16,24 +18,22 @@ const Forgot = ({navigation}) => {
       />
       <HeadlineText condition="Forgot password" />
       <Content style={styles.formWrapper}>
-        <Text style={{marginLeft: 20, fontSize: 14}}>
+        <Text style={{marginHorizontal: 10, fontSize: 14, marginBottom: 10}}>
           Please, enter your email address. You will receive a link to create a
           new password via email.
         </Text>
-        <View style={styles.formBox}>
-          <TextInput
-            onChangeText={(val) => onChangeText(val)}
-            style={styles.inputBox}
-          />
-          <Text onChangeText={(val) => onChangeText(val)} style={styles.text}>
-            Email
-          </Text>
-        </View>
+        <Input
+          placeholder="Email"
+          onChangeText={(val) => onChangeText(val)}
+          inputContainerStyle={styles.inputBox}
+        />
         <Button
-          style={styles.button}
-          onPress={() => navigation.navigate('Reset')}>
-          <Text style={styles.buttonText}>Send</Text>
-        </Button>
+          onPress={() => {
+            navigation.navigate('Reset');
+          }}
+          title="Send"
+          buttonStyle={styles.button}
+        />
       </Content>
     </Container>
   );

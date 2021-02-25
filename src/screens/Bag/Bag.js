@@ -6,24 +6,32 @@ import {
   plusQty,
   minQty,
   clearCart,
-} from '../public/redux/action/cartAction';
+} from '../../public/redux/action/cartAction';
 import {View, StyleSheet, Image, Alert} from 'react-native';
-import {Button, Text, Content, Container} from 'native-base';
+import {Text, Content, Container} from 'native-base';
+import {Button} from 'react-native-elements';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-import HeadlineText from '../components/HeadlineText/HeadlineText';
-import ProductBag from '../components/ProductBag/ProductBag';
-import CustomHeader from '../components/CustomHeader/CustomHeader';
-import Bags from '../assets/icons/bags.png';
+import HeadlineText from '../../components/HeadlineText/HeadlineText';
+import ProductBag from '../../components/ProductBag/ProductBag';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
+import Bags from '../../assets/icons/bags.png';
 
 const Bag = ({navigation, cart, removeFromCart, pickCart, plusQty, minQty}) => {
   const pick = useSelector((state) => state.cart.cart);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
+
   if (pick.length !== 0) {
     pick.map((item) =>
       console.log('disini cekpoint ' + pick.indexOf(item) + ' ' + item.pick),
     );
   }
+
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
   useEffect(() => {
     let items = 0;
     let price = 0;
@@ -38,7 +46,7 @@ const Bag = ({navigation, cart, removeFromCart, pickCart, plusQty, minQty}) => {
     setTotalItems(items);
     setTotalPrice(price);
   }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
-  console.log(cart.length);
+
   return (
     <Container>
       <CustomHeader
@@ -63,15 +71,10 @@ const Bag = ({navigation, cart, removeFromCart, pickCart, plusQty, minQty}) => {
                 Empty?
               </Text>
               <Button
-                rounded
+                title="Shopping"
                 onPress={() => navigation.navigate('Home')}
-                style={{
-                  marginLeft: 100,
-                  marginTop: 10,
-                  backgroundColor: '#DB3022',
-                }}>
-                <Text>Shopping</Text>
-              </Button>
+                buttonStyle={styles.buttonShop}
+              />
             </View>
           </View>
         ) : (
@@ -97,10 +100,10 @@ const Bag = ({navigation, cart, removeFromCart, pickCart, plusQty, minQty}) => {
         <View style={styles.footer}>
           <View style={styles.total}>
             <Text>Total amount: </Text>
-            <Text>{`Rp ${totalPrice.toFixed(2)}`}</Text>
+            <Text>{`Rp ${toPrice(totalPrice)}`}</Text>
           </View>
           <Button
-            style={styles.button}
+            title="Checkout"
             onPress={() => {
               if (totalItems == 0) {
                 return Alert.alert(
@@ -112,9 +115,9 @@ const Bag = ({navigation, cart, removeFromCart, pickCart, plusQty, minQty}) => {
               }
               clearCart();
               navigation.navigate('Checkout', {totalPrice, totalItems});
-            }}>
-            <Text style={styles.buttonText}>Checkout</Text>
-          </Button>
+            }}
+            buttonStyle={styles.button}
+          />
         </View>
       )}
     </Container>
@@ -141,25 +144,28 @@ export default connect(mapStateToProps, mapDispatchToProps)(Bag);
 
 const styles = StyleSheet.create({
   button: {
-    position: 'relative',
-    width: 390,
     height: 48,
-    marginLeft: 20,
+    marginVertical: 15,
     backgroundColor: '#DB3022',
     borderRadius: 50,
+  },
+  buttonShop: {
+    width: wp('50%'),
+    marginTop: 10,
+    backgroundColor: '#DB3022',
+    alignItems: 'center',
+    borderRadius: 20,
+    left: wp('10%'),
+    right: 0,
   },
   image: {
     left: 100,
     top: 70,
   },
-  buttonText: {
-    position: 'absolute',
-    left: 135,
-  },
   total: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     marginBottom: 10,
   },
   checkout: {
@@ -170,8 +176,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     paddingVertical: 15,
-    backgroundColor: 'white',
-    right: 16,
+    backgroundColor: 'transparent',
+    marginHorizontal: 20,
     alignSelf: 'center',
+    width: wp('100%'),
   },
 });

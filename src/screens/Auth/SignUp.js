@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {Alert, View, TextInput, ToastAndroid} from 'react-native';
-import {Button, Text, Content, Container} from 'native-base';
+import {View, ToastAndroid} from 'react-native';
+import {Text, Content, Container} from 'native-base';
+import {Button, Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 import CustomHeader from '../../components/CustomHeader/CustomHeader';
 import HeadlineText from '../../components/HeadlineText/HeadlineText';
 import {API_URL_DEVELOPMENT} from '@env';
@@ -39,8 +41,6 @@ const SignUp = ({navigation}) => {
       setError('Please fill all form field');
     } else if (email === '') {
       setError('Fill your email');
-    } else if (store === '') {
-      setError('Fill your store name');
     } else if (number === '') {
       setError('Fill your phone number');
     } else if (password === '') {
@@ -56,20 +56,14 @@ const SignUp = ({navigation}) => {
       };
 
       axios
-        .post(`${API_URL_DEVELOPMENT}auth/register`, data)
+        .post(`${API_URL_DEVELOPMENT}/auth/register`, data)
         .then(async (res) => {
-          // Alert.alert(
-          //   'Register',
-          //   'Successfully register',
-          //   [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-          //   {cancelable: false},
-          // );
-          navigation.navigate('Profile');
+          navigation.navigate('Login');
+          showToastWithGravityAndOffset();
         })
         .catch((err) => setError(err.response.data.msg));
     }
   };
-  console.log(type);
   return (
     <Container>
       <CustomHeader
@@ -82,75 +76,63 @@ const SignUp = ({navigation}) => {
           onPress={() => {
             setType(1);
           }}
-          style={{
+          buttonStyle={{
             backgroundColor: type === 1 ? '#DB3022' : '#fff',
             borderTopRightRadius: 0,
             borderBottomRightRadius: 0,
             borderTopLeftRadius: 30,
             borderBottomLeftRadius: 30,
-          }}>
-          <Text style={{color: type === 1 ? '#fff' : '#DB3022'}}>Consumer</Text>
-        </Button>
+          }}
+          title="Customer"
+          titleStyle={{color: type === 1 ? '#fff' : '#DB3022'}}
+        />
         <Button
           onPress={() => {
             setType(2);
           }}
-          style={{
+          buttonStyle={{
             backgroundColor: type === 2 ? '#DB3022' : '#fff',
             paddingHorizontal: 20,
             borderTopLeftRadius: 0,
             borderBottomLeftRadius: 0,
             borderTopRightRadius: 30,
             borderBottomRightRadius: 30,
-          }}>
-          <Text style={{color: type === 2 ? '#fff' : '#DB3022'}}>Seller</Text>
-        </Button>
+          }}
+          title="seller"
+          titleStyle={{color: type === 2 ? '#fff' : '#DB3022'}}
+        />
       </View>
       <Text style={styles.errorMsg}>{error}</Text>
       <Content style={styles.formWrapper}>
-        <View style={styles.formBox}>
-          <TextInput
-            onChangeText={(val) => setName(val)}
-            defaultValue={name}
-            style={styles.inputBox}
-          />
-          <Text style={styles.text}>Name</Text>
-        </View>
-        <View style={styles.formBox}>
-          <TextInput
-            onChangeText={(val) => setEmail(val)}
-            defaultValue={email}
-            style={styles.inputBox}
-          />
-          <Text style={styles.text}>Email</Text>
-        </View>
+        <Input
+          placeholder="Name"
+          onChangeText={(val) => setName(val)}
+          inputContainerStyle={styles.inputBox}
+        />
+        <Input
+          placeholder="Email"
+          onChangeText={(val) => setEmail(val)}
+          inputContainerStyle={styles.inputBox}
+        />
         {type === 2 && (
-          <View style={styles.formBox}>
-            <TextInput
-              onChangeText={(val) => setStore(val)}
-              defaultValue={store}
-              style={styles.inputBox}
-            />
-            <Text style={styles.text}>Store Name</Text>
-          </View>
+          <Input
+            placeholder="Store Name"
+            onChangeText={(val) => setStore(val)}
+            inputContainerStyle={styles.inputBox}
+          />
         )}
-        <View style={styles.formBox}>
-          <TextInput
-            onChangeText={(val) => setNumber(val)}
-            defaultValue={number}
-            keyboardType="phone-pad"
-            style={styles.inputBox}
-          />
-          <Text style={styles.text}>Telephone</Text>
-        </View>
-        <View defaultValue={password} style={styles.formBox}>
-          <TextInput
-            secureTextEntry
-            onChangeText={(val) => setPassword(val)}
-            style={styles.inputBox}
-          />
-          <Text style={styles.text}>Password</Text>
-        </View>
+        <Input
+          placeholder="Telephone"
+          onChangeText={(val) => setNumber(val)}
+          inputContainerStyle={styles.inputBox}
+          keyboardType="phone-pad"
+        />
+        <Input
+          placeholder="Password"
+          onChangeText={(val) => setPassword(val)}
+          inputContainerStyle={styles.inputBox}
+          secureTextEntry={true}
+        />
         <View style={styles.textBox}>
           <Text style={styles.longText}>Already have an account?</Text>
           <Icon
@@ -161,13 +143,12 @@ const SignUp = ({navigation}) => {
           />
         </View>
         <Button
-          style={styles.button}
+          title="Sign Up"
           onPress={() => {
-            showToastWithGravityAndOffset();
             handleSubmit();
-          }}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </Button>
+          }}
+          buttonStyle={styles.button}
+        />
       </Content>
     </Container>
   );

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
   headlineText: {
@@ -6,8 +7,8 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginBottom: 20,
   },
-  brandCondition: {fontSize: 34, fontWeight: 'bold'},
-  desc: {fontSize: 11, color: 'gray'},
+  brandCondition: {fontSize: hp('3.5%'), fontWeight: 'bold'},
+  desc: {fontSize: hp('1.8%'), color: 'gray'},
 });
 
 export default styles;

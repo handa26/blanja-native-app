@@ -15,9 +15,8 @@ const Shipping = ({navigation}) => {
 
   useEffect(() => {
     axios
-      .get(`${API_URL_DEVELOPMENT}address/${userId}`)
+      .get(`${API_URL_DEVELOPMENT}/address/${userId}`)
       .then(({data}) => {
-        console.log(data.data);
         setAddress(data.data);
       })
       .catch((err) => console.log(err));
@@ -53,7 +52,6 @@ const Shipping = ({navigation}) => {
         ) : (
           <Spinner />
         )}
-        {/* <ShippingCard /> */}
         <Button
           bordered
           style={styles.button}

@@ -4,8 +4,8 @@ import {View, StyleSheet, ToastAndroid, TextInput} from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
 import {useSelector} from 'react-redux';
 
-import CustomHeader from '../components/CustomHeader/CustomHeader';
-import HeadlineText from '../components/HeadlineText/HeadlineText';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
+import HeadlineText from '../../components/HeadlineText/HeadlineText';
 import {API_URL_DEVELOPMENT} from '@env';
 
 const Address = ({navigation}) => {

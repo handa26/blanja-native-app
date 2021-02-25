@@ -1,18 +1,21 @@
 import React from 'react';
 import {View} from 'react-native';
-import {List, ListItem, Text, Button} from 'native-base';
+import {List, ListItem, Text} from 'native-base';
+import {Button} from 'react-native-elements';
 
 import styles from './styles';
 
 const ListCategory = ({navigation}) => {
   return (
     <View>
-      <View>
+      <View style={styles.wrapper}>
         <Button
-          style={styles.button}
-          onPress={() => navigation.navigate('NewProducts')}>
-          <Text style={{marginLeft: 130}}>View All Items</Text>
-        </Button>
+          onPress={() => {
+            navigation.navigate('NewProducts', {title: 'All Products'});
+          }}
+          title="View All Items"
+          buttonStyle={styles.button}
+        />
         <List>
           <ListItem itemHeader first>
             <Text>Choose category</Text>

@@ -1,25 +1,36 @@
 import React, {useState, useEffect} from 'react';
-import {connect} from 'react-redux';
-import {addToCart} from '../public/redux/action/cartAction';
+import {connect, useSelector} from 'react-redux';
+import {addToCart} from '../../public/redux/action/cartAction';
 import axios from 'axios';
-import {View, Text, Alert} from 'react-native';
+import {View, ToastAndroid} from 'react-native';
 import {Spinner} from 'native-base';
-import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT} from '@env';
 
-import DetailProduct from '../components/DetailProduct/DetailProduct';
+import DetailProduct from '../../components/DetailProduct/DetailProduct';
 
 const Product = ({route, navigation, addToCart}) => {
   const [product, setProduct] = useState({});
   const [image, setImage] = useState({});
   const {Itemid} = route.params;
-  const url = `${API_URL_DEVELOPMENT}product/` + Itemid;
+  const url = `${API_URL_DEVELOPMENT}/product/` + Itemid;
+  const id = useSelector((state) => state.auth.id);
+
+  const showToastWithGravityAndOffset = () => {
+    ToastAndroid.showWithGravityAndOffset(
+      'Added to bag!',
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50,
+    );
+  };
 
   useEffect(() => {
     axios
       .get(url)
       .then(({data}) => {
         let splitter = data.image.split(',');
-        setImage(splitter.map((e) => e.replace('localhost', IP_DEVELOPMENT)));
+        setImage(splitter.map((e) => API_URL_DEVELOPMENT + e));
         setProduct(data);
       })
       .catch((err) => console.log(err));
@@ -37,20 +48,17 @@ const Product = ({route, navigation, addToCart}) => {
           brand={product.product_brand}
           price={product.product_price}
           navigation={navigation}
+          productId={product.user_id}
+          roomId={`S${product.user_id}B${id}`}
           addToCart={() => {
             addToCart(
               product.id,
               image[0],
               product.product_price,
               product.product_name,
+              product.user_id,
             );
-            console.log('Added to cart');
-            Alert.alert(
-              'Add to cart',
-              `${product.product_name} added to cart`,
-              [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-              {cancelable: false},
-            );
+            showToastWithGravityAndOffset();
           }}
         />
       ) : (
@@ -62,8 +70,8 @@ const Product = ({route, navigation, addToCart}) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addToCart: (id, image, price, productName) =>
-      dispatch(addToCart(id, image, price, productName)),
+    addToCart: (id, image, price, productName, sellerId) =>
+      dispatch(addToCart(id, image, price, productName, sellerId)),
   };
 };
 

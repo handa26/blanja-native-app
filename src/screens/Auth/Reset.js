@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, TextInput} from 'react-native';
-import {Button, Text, Content, Container} from 'native-base';
+import {Text, Content, Container} from 'native-base';
+import {Button, Input} from 'react-native-elements';
+
 import CustomHeader from '../../components/CustomHeader/CustomHeader';
 import HeadlineText from '../../components/HeadlineText/HeadlineText';
 
@@ -16,22 +18,34 @@ const Reset = ({navigation}) => {
       />
       <HeadlineText condition="Reset password" />
       <Content style={styles.formWrapper}>
-        <Text style={{marginLeft: 20, fontSize: 14, color: 'red'}}>
+        <Text
+          style={{
+            marginHorizontal: 10,
+            marginBottom: 10,
+            fontSize: 14,
+            color: 'red',
+          }}>
           You need to change your password to activate your account.
         </Text>
-        <View onChangeText={(val) => onChangeText(val)} style={styles.formBox}>
-          <TextInput secureTextEntry style={styles.inputBox} />
-          <Text style={styles.text}>New Password</Text>
-        </View>
-        <View onChangeText={(val) => onChangeText(val)} style={styles.formBox}>
-          <TextInput secureTextEntry style={styles.inputBox} />
-          <Text style={styles.text}>Confirmation New Password</Text>
-        </View>
+        <Input
+          placeholder="New Password"
+          onChangeText={(val) => onChangeText(val)}
+          secureTextEntry={true}
+          inputContainerStyle={styles.inputBox}
+        />
+        <Input
+          placeholder="Confirmation New Password"
+          onChangeText={(val) => onChangeText(val)}
+          secureTextEntry={true}
+          inputContainerStyle={styles.inputBox}
+        />
         <Button
-          style={styles.button}
-          onPress={() => navigation.navigate('Login')}>
-          <Text style={{marginLeft: 120}}>Reset Password</Text>
-        </Button>
+          onPress={() => {
+            navigation.navigate('Login');
+          }}
+          title="Reset Password"
+          buttonStyle={styles.button}
+        />
       </Content>
     </Container>
   );

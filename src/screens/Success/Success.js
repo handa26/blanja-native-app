@@ -2,7 +2,7 @@ import React from 'react';
 import {View, ImageBackground, StyleSheet, StatusBar} from 'react-native';
 import {Button, Text} from 'native-base';
 
-import successBg from '../assets/images/success-bg.png';
+import successBg from '../../assets/images/success-bg.png';
 
 const Success = ({navigation}) => {
   return (

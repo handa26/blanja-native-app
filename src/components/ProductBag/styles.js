@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
   image: {
@@ -9,9 +10,9 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     flexDirection: 'row',
-    width: 385,
-    backgroundColor: 'white',
-    marginHorizontal: 20,
+    width: wp('100%'),
+    backgroundColor: '#f1f1f1',
+    // marginHorizontal: wp('10%'),
     borderRadius: 15,
     marginVertical: 10,
   },

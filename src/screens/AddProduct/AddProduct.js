@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {
   View,
   StyleSheet,
-  ScrollView,
   TextInput,
-  Image,
   Platform,
+  Image,
+  ScrollView,
   ToastAndroid,
 } from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
@@ -15,29 +15,28 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Picker} from '@react-native-picker/picker';
 import ImagePicker from 'react-native-image-crop-picker';
 
-import CustomHeader from '../components/CustomHeader/CustomHeader';
-import HeadlineText from '../components/HeadlineText/HeadlineText';
-import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
+import HeadlineText from '../../components/HeadlineText/HeadlineText';
+import {API_URL_DEVELOPMENT} from '@env';
 
-const EditProduct = ({route, navigation}) => {
-  const [product, setProduct] = useState({});
-  const [image, setImage] = useState({});
+const AddProduct = ({navigation}) => {
   const [productName, setProductName] = useState('');
   const [category, setCategory] = useState();
   const [filePath, setFilePath] = useState([]);
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState('');
   const [desc, setDesc] = useState('');
   const [size, setSize] = useState('');
   const [brand, setBrand] = useState('');
-  const [quantity, setQuantity] = useState([]);
+  const [quantity, setQuantity] = useState('');
+  const [rating, setRating] = useState(4);
   const [color, setColor] = useState('');
   const [capture, setCapture] = useState({});
   const token = useSelector((state) => state.auth.token);
-  const {Itemid} = route.params;
+  const userId = useSelector((state) => state.auth.id);
 
   const showToastWithGravityAndOffset = () => {
     ToastAndroid.showWithGravityAndOffset(
-      'The product successfully updated',
+      'The product successfully added',
       ToastAndroid.LONG,
       ToastAndroid.BOTTOM,
       25,
@@ -60,7 +59,9 @@ const EditProduct = ({route, navigation}) => {
     data.append('product_description', desc);
     data.append('size', size);
     data.append('product_color', color);
+    data.append('product_rating', rating);
     data.append('product_qty', quantity);
+    data.append('user_id', userId);
     for (let i = 0; i < filePath.length; i++) {
       data.append('image', {
         name: filePath[i].path.split('/').pop(),
@@ -84,25 +85,12 @@ const EditProduct = ({route, navigation}) => {
     }
 
     axios
-      .patch(`${API_URL_DEVELOPMENT}product/${Itemid}`, data, config)
+      .post(`${API_URL_DEVELOPMENT}/product`, data, config)
       .then((res) => {
         console.log(res);
-        console.log('update');
       })
       .catch((err) => console.log(err));
   };
-
-  useEffect(() => {
-    axios
-      .get(`${API_URL_DEVELOPMENT}product/${Itemid}`)
-      .then(({data}) => {
-        let splitter = data.image.split(',');
-        console.log('test');
-        setImage(splitter.map((e) => e.replace('localhost', IP_DEVELOPMENT)));
-        setProduct(data);
-      })
-      .catch((err) => console.log(err));
-  }, [Itemid]);
 
   const chooseImages = () => {
     ImagePicker.openPicker({
@@ -110,7 +98,6 @@ const EditProduct = ({route, navigation}) => {
       mediaType: 'photo',
     })
       .then((images) => {
-        console.log(images);
         setFilePath(images);
       })
       .catch((err) => console.log(err));
@@ -125,23 +112,23 @@ const EditProduct = ({route, navigation}) => {
     })
       .then((images) => {
         setCapture(images);
-        console.log(images);
       })
       .catch((err) => console.log(err));
   };
 
+  console.log(filePath);
   return (
     <Container>
       <CustomHeader
         leftIcon="arrow-left"
         leftIconRoute={() => navigation.goBack()}
       />
-      <HeadlineText condition="Update Product" />
-      <Content>
+      <HeadlineText condition="Add Product" />
+      <Content style={styles.formWrapper}>
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setProductName(val)}
-            defaultValue={product.product_name}
+            defaultValue={productName}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Name</Text>
@@ -149,7 +136,7 @@ const EditProduct = ({route, navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setBrand(val)}
-            defaultValue={product.product_brand}
+            defaultValue={brand}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Brand</Text>
@@ -174,8 +161,13 @@ const EditProduct = ({route, navigation}) => {
           </ScrollView>
         </View>
         <View style={styles.formBox}>
-          <Button iconLeft block rounded onPress={() => chooseImages()}>
-            <Icon name="plus" size={20} />
+          <Button
+            iconLeft
+            block
+            rounded
+            style={{backgroundColor: '#DB3022'}}
+            onPress={() => chooseImages()}>
+            <Icon name="plus" size={20} color="white" />
             <Text>Choose an image to upload</Text>
           </Button>
         </View>
@@ -194,23 +186,29 @@ const EditProduct = ({route, navigation}) => {
           </ScrollView>
         </View>
         <View style={styles.formBox}>
-          <Button iconLeft block rounded onPress={captureImages}>
-            <Icon name="camera" size={20} />
+          <Button
+            iconLeft
+            block
+            rounded
+            style={{backgroundColor: '#DB3022'}}
+            onPress={captureImages}>
+            <Icon name="camera" size={20} color="white" />
             <Text>Capture your photo</Text>
           </Button>
         </View>
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setDesc(val)}
-            defaultValue={product.product_description}
-            style={styles.inputBox}
+            defaultValue={desc}
+            multiline={true}
+            style={styles.descBox}
           />
           <Text style={styles.text}>Product Description</Text>
         </View>
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setPrice(val)}
-            defaultValue={String(product.product_price)}
+            defaultValue={price}
             style={styles.inputBox}
             keyboardType="numeric"
           />
@@ -219,7 +217,7 @@ const EditProduct = ({route, navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setSize(val)}
-            defaultValue={String(product.size)}
+            defaultValue={size}
             style={styles.inputBox}
             keyboardType="numeric"
           />
@@ -239,7 +237,7 @@ const EditProduct = ({route, navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setQuantity(val)}
-            defaultValue={String(product.product_qty)}
+            defaultValue={quantity}
             style={styles.inputBox}
             keyboardType="numeric"
           />
@@ -248,7 +246,7 @@ const EditProduct = ({route, navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setColor(val)}
-            defaultValue={product.product_color}
+            defaultValue={color}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Color</Text>
@@ -260,14 +258,14 @@ const EditProduct = ({route, navigation}) => {
             showToastWithGravityAndOffset();
             navigation.navigate('Home');
           }}>
-          <Text style={styles.buttonText}>Update Now</Text>
+          <Text style={styles.buttonText}>Add Now</Text>
         </Button>
       </Content>
     </Container>
   );
 };
 
-export default EditProduct;
+export default AddProduct;
 
 const styles = StyleSheet.create({
   formWrapper: {
@@ -312,6 +310,14 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     padding: 10,
   },
+  descBox: {
+    width: 390,
+    height: 100,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: 'black',
+    padding: 10,
+  },
   button: {
     position: 'relative',
     width: 390,
@@ -323,7 +329,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     position: 'absolute',
-    left: 130,
+    left: 153,
   },
   buttonChoose: {
     width: 200,

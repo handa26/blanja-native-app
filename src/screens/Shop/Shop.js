@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
-import ListCategory from '../components/ListCategory/ListCategory';
-import CustomHeader from '../components/CustomHeader/CustomHeader';
+import ListCategory from '../../components/ListCategory/ListCategory';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
 
 const Shop = ({navigation}) => {
   return (

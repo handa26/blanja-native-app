@@ -1,16 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {View, ScrollView, StatusBar, Text} from 'react-native';
-import {API_URL_DEVELOPMENT, IP_DEVELOPMENT, API_URL} from '@env';
+import {API_URL_DEVELOPMENT} from '@env';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
-import ImageHeader from '../components/ImageHeader/ImageHeader';
-import ProductCard from '../components/ProductCard/ProductCard';
-import HeadlineText from '../components/HeadlineText/HeadlineText';
+import ImageHeader from '../../components/ImageHeader/ImageHeader';
+import ProductCard from '../../components/ProductCard/ProductCard';
+import HeadlineText from '../../components/HeadlineText/HeadlineText';
 
 const Home = ({navigation}) => {
   const [products, setProducts] = useState({});
   const [productsPopular, setProductsPopular] = useState({});
-  const url = `${API_URL_DEVELOPMENT}products`;
+  const url = `${API_URL_DEVELOPMENT}/products`;
 
   useEffect(() => {
     axios
@@ -37,7 +41,7 @@ const Home = ({navigation}) => {
           <HeadlineText condition="New" desc="You’ve never seen it before!" />
           <Text
             onPress={() => navigation.navigate('NewProducts')}
-            style={{left: 200, top: 59}}>
+            style={{left: wp('40%'), top: hp('7%'), fontSize: hp('1.8%')}}>
             View all
           </Text>
         </View>
@@ -49,7 +53,7 @@ const Home = ({navigation}) => {
                 <ProductCard
                   navigation={navigation}
                   key={product.id}
-                  imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
+                  imgUrl={API_URL_DEVELOPMENT + img[0]}
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}
@@ -65,7 +69,7 @@ const Home = ({navigation}) => {
           />
           <Text
             onPress={() => navigation.navigate('PopularProducts')}
-            style={{left: 100, top: 63}}>
+            style={{left: wp('8.5%'), top: hp('7%'), fontSize: hp('1.8%')}}>
             View all
           </Text>
         </View>
@@ -76,7 +80,7 @@ const Home = ({navigation}) => {
               return (
                 <ProductCard
                   key={product.id}
-                  imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
+                  imgUrl={API_URL_DEVELOPMENT + img[0]}
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}

@@ -1,15 +1,13 @@
 import {StyleSheet} from 'react-native';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
-  list: {
-    paddingHorizontal: 15,
+  wrapper: {
+    marginHorizontal: 10,
   },
   button: {
-    width: 397,
     height: 48,
-    marginTop: 20,
-    marginBottom: 15,
-    marginLeft: 15,
+    marginVertical: 15,
     backgroundColor: '#DB3022',
     borderRadius: 50,
   },

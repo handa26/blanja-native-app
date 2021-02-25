@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import {useSelector} from 'react-redux';
 import {ScrollView, View, Text, Image, StyleSheet} from 'react-native';
-import {Left, Button, Right, List, ListItem, H2} from 'native-base';
+import {Left, Right, List, ListItem, H2} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT} from '@env';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import {Button} from 'react-native-elements';
 
 import rating from '../../assets/icons/rating-full.png';
 import ProductCard from '../ProductCard/ProductCard';
@@ -17,9 +20,13 @@ const DetailProduct = ({
   price,
   navigation,
   addToCart,
+  productId,
+  roomId,
 }) => {
   const [products, setProducts] = useState({});
-  const url = `${API_URL_DEVELOPMENT}products`;
+
+  const url = `${API_URL_DEVELOPMENT}/products/`;
+  const id = useSelector((state) => state.auth.id);
 
   useEffect(() => {
     axios
@@ -53,22 +60,32 @@ const DetailProduct = ({
             <Image source={rating} />
           </View>
           <Text style={styles.textDesc}>{desc}</Text>
-          <Button style={styles.button} onPress={addToCart}>
-            <Text style={{marginLeft: 150, color: 'white'}}>ADD TO CART</Text>
-          </Button>
+          <Button
+            onPress={addToCart}
+            title="Add to Cart"
+            buttonStyle={styles.button}
+          />
         </View>
         <List style={{marginRight: 15, marginTop: 20}}>
-          <ListItem
-            onPress={() => navigation.navigate('Chat', {productName: name})}>
-            <Left>
-              <View>
-                <Text style={{fontSize: 20, fontWeight: 'bold'}}>Chat</Text>
-              </View>
-            </Left>
-            <Right>
-              <Icon name="chevron-right" />
-            </Right>
-          </ListItem>
+          {productId === id ? null : (
+            <ListItem
+              onPress={() =>
+                navigation.navigate('Chat', {
+                  productName: name,
+                  productId: productId,
+                  roomId: roomId,
+                })
+              }>
+              <Left>
+                <View>
+                  <Text style={{fontSize: 20, fontWeight: 'bold'}}>Chat</Text>
+                </View>
+              </Left>
+              <Right>
+                <Icon name="chevron-right" />
+              </Right>
+            </ListItem>
+          )}
           <ListItem>
             <Left>
               <View>
@@ -98,13 +115,12 @@ const DetailProduct = ({
           style={{flexDirection: 'row', marginVertical: 15}}>
           {products.products &&
             products.products.map((product) => {
-              let img = product.image.split(',');
-              console.log(img[0]);
+              let image = product.image.split(',');
               return (
                 <ProductCard
                   navigation={navigation}
                   key={product.id}
-                  imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
+                  imgUrl={API_URL_DEVELOPMENT + image[0]}
                   name={product.product_name}
                   brand={product.product_brand}
                   price={product.product_price}
@@ -126,7 +142,7 @@ const styles = StyleSheet.create({
   },
   productImage: {
     height: 413,
-    width: 450,
+    width: wp('100%'),
   },
   title: {
     marginLeft: 65,
@@ -157,7 +173,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   button: {
-    width: 400,
     height: 48,
     marginVertical: 15,
     backgroundColor: '#DB3022',

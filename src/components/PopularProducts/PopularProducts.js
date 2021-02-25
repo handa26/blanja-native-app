@@ -8,7 +8,7 @@ import {API_URL_DEVELOPMENT} from '@env';
 
 const PopularProducts = ({navigation}) => {
   const [productsPopular, setProductsPopular] = useState({});
-  const url = `${API_URL_DEVELOPMENT}products`;
+  const url = `${API_URL_DEVELOPMENT}/products`;
 
   useEffect(() => {
     axios
@@ -35,7 +35,7 @@ const PopularProducts = ({navigation}) => {
               <ProductCard
                 navigation={navigation}
                 key={product.id}
-                imgUrl={img[0].replace('localhost', '192.168.8.101')}
+                imgUrl={API_URL_DEVELOPMENT + img[0]}
                 name={product.product_name}
                 brand={product.product_brand}
                 price={product.product_price}

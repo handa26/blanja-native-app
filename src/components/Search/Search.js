@@ -25,11 +25,10 @@ const Search = ({navigation}) => {
   const handleSubmit = () => {
     axios
       .get(
-        `${API_URL_DEVELOPMENT}search?name=${value}&sortby=${condition}&sort=${price}&page=1&limit=10`,
+        `${API_URL_DEVELOPMENT}/search?name=${value}&sortby=${condition}&sort=${price}&page=1&limit=10`,
       )
       .then(({data}) => {
         console.log('Search result', data.products);
-        console.log('test');
         setProducts(data);
       })
       .catch((err) => console.log(err));
@@ -83,7 +82,6 @@ const Search = ({navigation}) => {
       <HeadlineText condition="Popular search" />
       <ActionSheet ref={actionSheetRef} animated gestureEnabled>
         <View>
-          {/* <View style={styles.borderLine} /> */}
           <Text style={styles.sortHead}>Sort by</Text>
         </View>
         <View>

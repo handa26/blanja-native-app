@@ -2,15 +2,14 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {Spinner} from 'native-base';
-import CustomHeader from '../components/CustomHeader/CustomHeader';
-import ProductCard from '../components/ProductCard/ProductCard';
-import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
+import ProductCard from '../../components/ProductCard/ProductCard';
+import {API_URL_DEVELOPMENT} from '@env';
 
 const Catalog = ({navigation, route}) => {
   const {categoryName, title} = route.params;
   const [products, setProducts] = useState({});
-  // const url = `http://54.237.63.225:3000/search?category=${categoryName}`;
-  const url = `${API_URL_DEVELOPMENT}search?category=${categoryName}`;
+  const url = `${API_URL_DEVELOPMENT}/search?category=${categoryName}`;
 
   useEffect(() => {
     axios
@@ -18,8 +17,6 @@ const Catalog = ({navigation, route}) => {
       .then(({data}) => setProducts(data))
       .catch((err) => console.log(err));
   }, [setProducts, url]);
-
-  // console.log(products);
 
   return (
     <ScrollView>
@@ -39,7 +36,7 @@ const Catalog = ({navigation, route}) => {
               <ProductCard
                 navigation={navigation}
                 key={product.id}
-                imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
+                imgUrl={API_URL_DEVELOPMENT + img[0]}
                 name={product.product_name}
                 brand={product.product_brand}
                 price={product.product_price}

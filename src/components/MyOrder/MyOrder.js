@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {ScrollView, View} from 'react-native';
-import {Spinner} from 'native-base';
 
 import {API_URL_DEVELOPMENT} from '@env';
 import HeadlineText from '../HeadlineText/HeadlineText';
@@ -15,16 +14,13 @@ const MyOrder = ({navigation}) => {
 
   useEffect(() => {
     axios
-      .get(`${API_URL_DEVELOPMENT}history/${userId}`)
+      .get(`${API_URL_DEVELOPMENT}/history/${userId}`)
       .then(({data}) => {
         setOrders(data.data);
-        console.log('payment');
-        console.log(data);
       })
       .catch((err) => console.log(err));
   }, [userId]);
 
-  // console.log(orders);
   return (
     <ScrollView>
       <CustomHeader
@@ -48,7 +44,6 @@ const MyOrder = ({navigation}) => {
               />
             );
           })}
-        {/* <OrderCard /> */}
       </View>
     </ScrollView>
   );

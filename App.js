@@ -1,31 +1,26 @@
 import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
-import {Provider} from 'react-redux';
-import store from './src/public/redux/store';
-import {PersistGate} from 'redux-persist/es/integration/react';
-import {persistStore} from 'redux-persist';
-import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import Home from './src/screens/Home';
-import Profile from './src/screens/Profile';
+import Home from './src/screens/Home/Home';
+import Profile from './src/screens/Profile/Profile';
 import Login from './src/screens/Auth/Login';
 import SignUp from './src/screens/Auth/SignUp';
 import Forgot from './src/screens/Auth/Forgot';
 import Reset from './src/screens/Auth/Reset';
-import Shop from './src/screens/Shop';
-import Bag from './src/screens/Bag';
-import Favorite from './src/screens/Favorite';
-import Product from './src/screens/Product';
-import Catalog from './src/screens/Catalog';
-import Checkout from './src/screens/Checkout';
-import Success from './src/screens/Success';
-import AddProduct from './src/screens/AddProduct';
-import MyProducts from './src/screens/MyProducts';
-import EditProduct from './src/screens/EditProduct';
+import Shop from './src/screens/Shop/Shop';
+import Bag from './src/screens/Bag/Bag';
+import Favorite from './src/screens/Favorite/Favorite';
+import Product from './src/screens/Product/Product';
+import Catalog from './src/screens/Catalog/Catalog';
+import Checkout from './src/screens/Checkout/Checkout';
+import Success from './src/screens/Success/Success';
+import AddProduct from './src/screens/AddProduct/AddProduct';
+import MyProducts from './src/screens/MyProducts/MyProducts';
+import EditProduct from './src/screens/EditProduct/EditProduct';
 import Notification from './src/components/Notification/Notification';
 import Search from './src/components/Search/Search';
 import MyOrder from './src/components/MyOrder/MyOrder';
@@ -33,12 +28,12 @@ import Shipping from './src/components/Shipping/Shipping';
 import Setup from './src/components/Setup/Setup';
 import NewProducts from './src/components/NewProducts/NewProducts';
 import PopularProducts from './src/components/PopularProducts/PopularProducts';
-import Chat from './src/screens/Chat';
-import Address from './src/screens/Address';
+import Chat from './src/screens/Chat/Chat';
+import Address from './src/screens/Address/Address';
+import ChatList from './src/screens/ChatList/ChatList';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const persistedStore = persistStore(store);
 
 import {useSelector} from 'react-redux';
 import {SocketProvider} from './src/public/context/SocketProvider';
@@ -104,7 +99,7 @@ function MyTabs() {
   );
 }
 
-const appRouter = ({navigation}) => {
+const appRouter = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     SplashScreen.hide();
@@ -136,6 +131,7 @@ const appRouter = ({navigation}) => {
         <Stack.Screen name="PopularProducts" component={PopularProducts} />
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="Address" component={Address} />
+        <Stack.Screen name="ChatList" component={ChatList} />
       </Stack.Navigator>
     </SocketProvider>
   );

@@ -1,6 +1,6 @@
 import * as actionTypes from '../actionTypes';
 
-export const addToCart = (itemId, image, price, productName) => {
+export const addToCart = (itemId, image, price, productName, sellerId) => {
   return {
     type: actionTypes.ADD_TO_CART,
     payload: {
@@ -8,6 +8,7 @@ export const addToCart = (itemId, image, price, productName) => {
       image: image,
       price: price,
       productName: productName,
+      seller_id: sellerId,
       pick: true,
     },
   };

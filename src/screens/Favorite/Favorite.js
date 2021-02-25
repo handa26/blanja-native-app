@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {ScrollView, View, Text, StyleSheet, Image} from 'react-native';
 import {Spinner} from 'native-base';
-import ProductCard from '../components/ProductCard/ProductCard';
-import CustomHeader from '../components/CustomHeader/CustomHeader';
-import bags from '../assets/icons/bags.png';
+import ProductCard from '../../components/ProductCard/ProductCard';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
+import bags from '../../assets/icons/bags.png';
 import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
 
 const Favorite = ({navigation}) => {

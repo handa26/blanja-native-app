@@ -17,22 +17,22 @@ import {
   Spinner,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
-import CustomHeader from '../components/CustomHeader/CustomHeader';
-import HeadlineText from '../components/HeadlineText/HeadlineText';
-import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
+import HeadlineText from '../../components/HeadlineText/HeadlineText';
+import {API_URL_DEVELOPMENT} from '@env';
 
 const MyProducts = ({navigation, id}) => {
   const [products, setProducts] = useState();
-  const url = `${API_URL_DEVELOPMENT}products`;
+  const url = `${API_URL_DEVELOPMENT}`;
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     axios
-      .get(`${url}/user/${id}`)
+      .get(`${url}/products/user/${id}`)
       .then(({data}) => {
         setProducts(data.data);
-        // console.log(data.data);
       })
       .catch((err) => console.log(err));
   }, [id, url]);
@@ -90,7 +90,7 @@ const MyProducts = ({navigation, id}) => {
                     <Thumbnail
                       square
                       source={{
-                        uri: img[0].replace('localhost', IP_DEVELOPMENT),
+                        uri: API_URL_DEVELOPMENT + img[0],
                       }}
                     />
                   </Left>
@@ -142,6 +142,14 @@ const MyProducts = ({navigation, id}) => {
           <Icon name="plus" size={20} color="white" />
           <Text>Add product</Text>
         </Button>
+        <Button
+          iconLeft
+          block
+          style={styles.btnChat}
+          rounded
+          onPress={() => navigation.navigate('ChatList')}>
+          <Icon name="envelope-o" size={20} color="white" />
+        </Button>
       </View>
     </Container>
   );
@@ -171,9 +179,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     alignSelf: 'center',
-    width: 390,
+    width: wp('100%'),
+    flexDirection: 'row',
   },
   btn: {
     backgroundColor: '#DB3022',
+    marginHorizontal: 10,
+    width: wp('70%'),
+  },
+  btnChat: {
+    backgroundColor: '#DB3022',
+    marginHorizontal: 10,
+    width: wp('20%'),
   },
 });

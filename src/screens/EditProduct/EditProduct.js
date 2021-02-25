@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {
   View,
-  Alert,
   StyleSheet,
-  TextInput,
-  Platform,
-  Image,
   ScrollView,
+  TextInput,
+  Image,
+  Platform,
   ToastAndroid,
 } from 'react-native';
 import {Button, Text, Content, Container} from 'native-base';
@@ -16,11 +15,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Picker} from '@react-native-picker/picker';
 import ImagePicker from 'react-native-image-crop-picker';
 
-import CustomHeader from '../components/CustomHeader/CustomHeader';
-import HeadlineText from '../components/HeadlineText/HeadlineText';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
+import HeadlineText from '../../components/HeadlineText/HeadlineText';
 import {API_URL_DEVELOPMENT} from '@env';
 
-const AddProduct = ({navigation}) => {
+const EditProduct = ({route, navigation}) => {
+  const [product, setProduct] = useState({});
+  const [image, setImage] = useState([]);
   const [productName, setProductName] = useState('');
   const [category, setCategory] = useState();
   const [filePath, setFilePath] = useState([]);
@@ -28,15 +29,17 @@ const AddProduct = ({navigation}) => {
   const [desc, setDesc] = useState('');
   const [size, setSize] = useState('');
   const [brand, setBrand] = useState('');
+  const [rating, setRating] = useState('4');
   const [quantity, setQuantity] = useState('');
   const [color, setColor] = useState('');
   const [capture, setCapture] = useState({});
+
   const token = useSelector((state) => state.auth.token);
-  const userId = useSelector((state) => state.auth.id);
+  const {Itemid} = route.params;
 
   const showToastWithGravityAndOffset = () => {
     ToastAndroid.showWithGravityAndOffset(
-      'The product successfully added',
+      'The product successfully updated',
       ToastAndroid.LONG,
       ToastAndroid.BOTTOM,
       25,
@@ -56,11 +59,11 @@ const AddProduct = ({navigation}) => {
     data.append('product_brand', brand);
     data.append('category_id', category);
     data.append('product_price', price);
+    data.append('product_rating', rating);
     data.append('product_description', desc);
     data.append('size', size);
     data.append('product_color', color);
     data.append('product_qty', quantity);
-    data.append('user_id', userId);
     for (let i = 0; i < filePath.length; i++) {
       data.append('image', {
         name: filePath[i].path.split('/').pop(),
@@ -84,13 +87,24 @@ const AddProduct = ({navigation}) => {
     }
 
     axios
-      .post(`${API_URL_DEVELOPMENT}product`, data, config)
+      .patch(`${API_URL_DEVELOPMENT}/product/${Itemid}`, data, config)
       .then((res) => {
         console.log(res);
-        console.log('Test');
+      })
+      .catch((err) => console.log(err.response.data));
+  };
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL_DEVELOPMENT}/product/${Itemid}`)
+      .then(({data}) => {
+        let splitter = data.image.split(',');
+        let mappedData = splitter.map((e) => API_URL_DEVELOPMENT + e);
+        setImage(mappedData);
+        setProduct(data);
       })
       .catch((err) => console.log(err));
-  };
+  }, [Itemid]);
 
   const chooseImages = () => {
     ImagePicker.openPicker({
@@ -98,7 +112,6 @@ const AddProduct = ({navigation}) => {
       mediaType: 'photo',
     })
       .then((images) => {
-        console.log(images);
         setFilePath(images);
       })
       .catch((err) => console.log(err));
@@ -118,18 +131,20 @@ const AddProduct = ({navigation}) => {
       .catch((err) => console.log(err));
   };
 
+  console.log(image);
+
   return (
     <Container>
       <CustomHeader
         leftIcon="arrow-left"
         leftIconRoute={() => navigation.goBack()}
       />
-      <HeadlineText condition="Add Product" />
-      <Content style={styles.formWrapper}>
+      <HeadlineText condition="Update Product" />
+      <Content>
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setProductName(val)}
-            defaultValue={productName}
+            defaultValue={product.product_name}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Name</Text>
@@ -137,7 +152,7 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setBrand(val)}
-            defaultValue={brand}
+            defaultValue={product.product_brand}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Brand</Text>
@@ -145,11 +160,11 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <Text>Choose your product image from your storage</Text>
           <ScrollView horizontal style={styles.imagesHolder}>
-            {filePath.map((item) => {
+            {image.map((item) => {
               return (
                 <Image
-                  key={filePath.indexOf(item)}
-                  source={{uri: filePath.length !== 0 ? item.path : ''}}
+                  key={image.indexOf(item)}
+                  source={{uri: item}}
                   style={{
                     width: 200,
                     height: 200,
@@ -162,8 +177,13 @@ const AddProduct = ({navigation}) => {
           </ScrollView>
         </View>
         <View style={styles.formBox}>
-          <Button iconLeft block rounded onPress={() => chooseImages()}>
-            <Icon name="plus" size={20} />
+          <Button
+            iconLeft
+            block
+            rounded
+            style={{backgroundColor: '#DB3022'}}
+            onPress={() => chooseImages()}>
+            <Icon name="plus" size={20} color="white" />
             <Text>Choose an image to upload</Text>
           </Button>
         </View>
@@ -182,23 +202,29 @@ const AddProduct = ({navigation}) => {
           </ScrollView>
         </View>
         <View style={styles.formBox}>
-          <Button iconLeft block rounded onPress={captureImages}>
-            <Icon name="camera" size={20} />
+          <Button
+            iconLeft
+            block
+            rounded
+            style={{backgroundColor: '#DB3022'}}
+            onPress={captureImages}>
+            <Icon name="camera" size={20} color="white" />
             <Text>Capture your photo</Text>
           </Button>
         </View>
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setDesc(val)}
-            defaultValue={desc}
-            style={styles.inputBox}
+            defaultValue={product.product_description}
+            multiline={true}
+            style={styles.descBox}
           />
           <Text style={styles.text}>Product Description</Text>
         </View>
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setPrice(val)}
-            defaultValue={price}
+            defaultValue={String(product.product_price)}
             style={styles.inputBox}
             keyboardType="numeric"
           />
@@ -207,7 +233,7 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setSize(val)}
-            defaultValue={size}
+            defaultValue={String(product.size)}
             style={styles.inputBox}
             keyboardType="numeric"
           />
@@ -227,7 +253,7 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setQuantity(val)}
-            defaultValue={quantity}
+            defaultValue={String(product.product_qty)}
             style={styles.inputBox}
             keyboardType="numeric"
           />
@@ -236,7 +262,7 @@ const AddProduct = ({navigation}) => {
         <View style={styles.formBox}>
           <TextInput
             onChangeText={(val) => setColor(val)}
-            defaultValue={color}
+            defaultValue={product.product_color}
             style={styles.inputBox}
           />
           <Text style={styles.text}>Product Color</Text>
@@ -248,14 +274,14 @@ const AddProduct = ({navigation}) => {
             showToastWithGravityAndOffset();
             navigation.navigate('Home');
           }}>
-          <Text style={styles.buttonText}>Add Now</Text>
+          <Text style={styles.buttonText}>Update Now</Text>
         </Button>
       </Content>
     </Container>
   );
 };
 
-export default AddProduct;
+export default EditProduct;
 
 const styles = StyleSheet.create({
   formWrapper: {
@@ -297,7 +323,15 @@ const styles = StyleSheet.create({
     height: 64,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#f1f1f1',
+    borderColor: 'black',
+    padding: 10,
+  },
+  descBox: {
+    width: 390,
+    height: 100,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: 'black',
     padding: 10,
   },
   button: {
@@ -311,7 +345,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     position: 'absolute',
-    left: 153,
+    left: 130,
   },
   buttonChoose: {
     width: 200,

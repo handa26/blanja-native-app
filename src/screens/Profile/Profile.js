@@ -1,15 +1,15 @@
 import React, {useEffect} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
-import {logout} from '../public/redux/action/authAction';
+import {logout} from '../../public/redux/action/authAction';
 import {View, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native';
 import {Right, List, ListItem, Text, Left} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import HeadlineText from '../components/HeadlineText/HeadlineText';
-import CustomHeader from '../components/CustomHeader/CustomHeader';
+import HeadlineText from '../../components/HeadlineText/HeadlineText';
+import CustomHeader from '../../components/CustomHeader/CustomHeader';
 import {API_URL_DEVELOPMENT} from '@env';
-import john from '../assets/john-lennon.jpg';
+import john from '../../assets/john-lennon.jpg';
 
 const Profile = ({
   navigation,
@@ -21,13 +21,6 @@ const Profile = ({
   name,
   email,
 }) => {
-  // console.log('Is login?', isLogin);
-  // console.log('Here token', token);
-  // console.log('your level', level);
-  // console.log('your user id', id);
-  // console.log('Your name', name);
-  // console.log('Your email', email);
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       if (!isLogin) {
@@ -58,12 +51,11 @@ const Profile = ({
             text: 'Ok',
             onPress: async () => {
               const data = '';
-              await axios.post(`${API_URL_DEVELOPMENT}auth/logout`, data, {
+              await axios.post(`${API_URL_DEVELOPMENT}/auth/logout`, data, {
                 headers: {
                   'x-access-token': 'Bearer ' + token,
                 },
               });
-              console.log('test');
               logoutRedux();
               navigation.navigate('Signup');
             },

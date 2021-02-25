@@ -1,19 +1,15 @@
 import {StyleSheet} from 'react-native';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const styles = StyleSheet.create({
   formWrapper: {
     marginTop: 50,
+    marginHorizontal: 10,
   },
   head: {
     marginLeft: 35,
     fontSize: 34,
     fontWeight: 'bold',
-  },
-  formBox: {
-    position: 'relative',
-    marginVertical: 20,
-    marginHorizontal: 20,
-    // marginLeft: 20,
   },
   text: {
     position: 'absolute',
@@ -25,9 +21,7 @@ const styles = StyleSheet.create({
   textBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: 343,
-    marginLeft: 60,
-    position: 'relative',
+    marginHorizontal: 10,
     marginVertical: 20,
     justifyContent: 'flex-end',
   },
@@ -36,25 +30,18 @@ const styles = StyleSheet.create({
     color: '#DADADA',
   },
   inputBox: {
-    width: 390,
     height: 64,
     borderWidth: 1,
+    borderBottomColor: 'gray',
     borderRadius: 4,
-    borderColor: 'black',
+    borderColor: 'gray',
     padding: 10,
   },
   button: {
-    position: 'relative',
-    width: 390,
     height: 48,
-    marginLeft: 20,
+    marginVertical: 15,
     backgroundColor: '#DB3022',
     borderRadius: 50,
-    marginBottom: 20,
-  },
-  buttonText: {
-    position: 'absolute',
-    left: 153,
   },
   errorMsg: {
     marginBottom: 10,
