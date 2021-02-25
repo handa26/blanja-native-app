@@ -3,7 +3,9 @@ import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {ScrollView, View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, Item, Input, Spinner} from 'native-base';
+import {Item, Spinner, Input} from 'native-base';
+import {Button} from 'react-native-elements';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 import CustomHeader from '../CustomHeader/CustomHeader';
 import ShippingCard from '../ShippingCard/ShippingCard';
@@ -34,6 +36,10 @@ const Shipping = ({navigation}) => {
           <Icon name="search" size={15} style={{marginLeft: 10}} />
           <Input placeholder="Search" />
         </Item>
+        {/* <Input
+          inputStyle={styles.input}
+          leftIcon={<Icon name="search" size={15} style={{marginLeft: 10}} />}
+        /> */}
         <Text style={styles.headlineText}>Shipping address</Text>
         {address ? (
           address &&
@@ -53,11 +59,12 @@ const Shipping = ({navigation}) => {
           <Spinner />
         )}
         <Button
-          bordered
-          style={styles.button}
-          onPress={() => navigation.navigate('Address')}>
-          <Text style={{marginLeft: 133, color: 'black'}}>ADD NEW ADDRESS</Text>
-        </Button>
+          title="Add New Address"
+          type="outline"
+          titleStyle={{color: 'black'}}
+          onPress={() => navigation.navigate('Address')}
+          buttonStyle={styles.button}
+        />
       </View>
     </ScrollView>
   );
@@ -73,10 +80,11 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'white',
-    marginLeft: 15,
+    marginHorizontal: 10,
+    marginLeft: 10,
     marginTop: 15,
     borderRadius: 30,
-    width: 395,
+    width: wp('95%'),
     height: 50,
     marginBottom: 20,
   },
@@ -87,12 +95,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    width: 385,
     height: 48,
     marginVertical: 15,
     borderColor: 'black',
+    marginHorizontal: 10,
     borderWidth: 1,
     borderRadius: 50,
-    marginLeft: 20,
   },
 });
