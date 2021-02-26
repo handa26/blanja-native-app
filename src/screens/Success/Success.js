@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, ImageBackground, StyleSheet, StatusBar} from 'react-native';
-import {Button, Text} from 'native-base';
+import {Text} from 'native-base';
+import {Button} from 'react-native-elements';
 
 import successBg from '../../assets/images/success-bg.png';
 
@@ -16,10 +17,10 @@ const Success = ({navigation}) => {
               Your order will be delivered soon. Thank you for choosing our app!
             </Text>
             <Button
-              style={styles.button}
-              onPress={() => navigation.navigate('Home')}>
-              <Text>Continue shopping</Text>
-            </Button>
+              title="Continue Shopping"
+              onPress={() => navigation.navigate('Home')}
+              buttonStyle={styles.button}
+            />
           </View>
         </View>
       </ImageBackground>

@@ -8,7 +8,8 @@ import {
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import {Button, Text} from 'native-base';
+import {Text} from 'native-base';
+import {Button} from 'react-native-elements';
 import PushNotification from 'react-native-push-notification';
 import {showNotification} from '../../notif';
 
@@ -90,6 +91,10 @@ const Checkout = ({navigation, id, route}) => {
     }
   };
 
+  const toPrice = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
   return (
     <ScrollView>
       <CustomHeader
@@ -147,19 +152,19 @@ const Checkout = ({navigation, id, route}) => {
       <View style={styles.bottomNav}>
         <View style={styles.total}>
           <Text>Total amount:</Text>
-          <Text>Rp. {totalPrice.toFixed(2)}</Text>
+          <Text>Rp. {toPrice(totalPrice)}</Text>
         </View>
         <Button
-          style={styles.button}
+          title="Submit Order"
+          buttonStyle={styles.button}
           onPress={() => {
             postTransaction();
             showToastWithGravityAndOffset();
             showNotification('Notification', 'Checkout success', channel);
             setPayment('');
             navigation.navigate('Success');
-          }}>
-          <Text style={styles.buttonText}>Submit Order</Text>
-        </Button>
+          }}
+        />
       </View>
     </ScrollView>
   );
@@ -194,7 +199,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: 390,
     height: 48,
-    marginLeft: 20,
+    marginHorizontal: 10,
     backgroundColor: '#DB3022',
     borderRadius: 50,
   },

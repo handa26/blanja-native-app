@@ -58,7 +58,7 @@ const DetailProduct = ({
                 marginVertical: 5,
               }}>
               <Text style={styles.text}>{name}</Text>
-              <Text style={styles.textPrice}>Rp. {toPrice(price)}</Text>
+              <Text style={styles.textPrice}>Rp. {price}</Text>
             </View>
             <Text style={styles.textBrand}>{brand}</Text>
             <Image source={rating} />
