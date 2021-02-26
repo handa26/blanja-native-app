@@ -7,7 +7,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HeadlineText from '../HeadlineText/HeadlineText';
 import ProductCard from '../ProductCard/ProductCard';
-import {API_URL_DEVELOPMENT, IP_DEVELOPMENT} from '@env';
+import {API_URL_DEVELOPMENT} from '@env';
 
 const actionSheetRef = createRef();
 
@@ -124,7 +124,8 @@ const Search = ({navigation}) => {
         </View>
       </ActionSheet>
       <View style={styles.productsWrapper}>
-        {products.products &&
+        {products.products !== 'Page not found' ? (
+          products.products &&
           products.products.map((product) => {
             let img = product.image.split(',');
             return (
@@ -133,12 +134,20 @@ const Search = ({navigation}) => {
                 brand={product.product_brand}
                 navigation={navigation}
                 key={product.id}
-                imgUrl={img[0].replace('localhost', IP_DEVELOPMENT)}
+                imgUrl={API_URL_DEVELOPMENT + img[0]}
                 price={product.product_price}
                 id={product.id}
+                badge="Popular"
               />
             );
-          })}
+          })
+        ) : (
+          <View style={styles.emptyWrapper}>
+            <Text style={styles.emptyText}>
+              Couldn't what you've looking for
+            </Text>
+          </View>
+        )}
       </View>
     </ScrollView>
   );
@@ -200,5 +209,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1F1F1',
     height: 30,
     width: 130,
+  },
+  emptyWrapper: {
+    marginTop: 50,
+  },
+  emptyText: {
+    fontSize: 24,
+    color: 'orangered',
+    fontWeight: 'bold',
   },
 });
